@@ -51,7 +51,17 @@ async def init():
             BANNED_USERS.add(user_id)
     except:
         pass
-    await app.start()
+    for attempt in range(5):
+        try:
+            await app.start()
+            break
+        except Exception as e:
+            LOGGER("YukkiMusic").warning(
+                f"app.start() failed (attempt {attempt + 1}/5): {e}"
+            )
+            if attempt == 4:
+                raise
+            await asyncio.sleep(3)
     for all_module in ALL_MODULES:
         importlib.import_module("YukkiMusic.plugins" + all_module)
     LOGGER("Yukkimusic.plugins").info(
