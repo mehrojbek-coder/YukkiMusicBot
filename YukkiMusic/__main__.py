@@ -18,6 +18,7 @@ import config
 from config import BANNED_USERS
 from YukkiMusic import LOGGER, app, userbot
 from YukkiMusic.core.call import Yukki
+from YukkiMusic.core.userbot import _resolve_session
 from YukkiMusic.plugins import ALL_MODULES
 from YukkiMusic.utils.database import get_banned_users, get_gbanned
 
@@ -25,17 +26,15 @@ loop = asyncio.get_event_loop()
 
 
 async def init():
-    if (
-        not config.STRING1
-        and not config.STRING2
-        and not config.STRING3
-        and not config.STRING4
-        and not config.STRING5
-    ):
-        LOGGER("YukkiMusic").error(
-            "No Assistant Clients Vars Defined!.. Exiting Process."
+    has_assistant = any(
+        _resolve_session(getattr(config, f"STRING{n}"), str(n))
+        for n in (1, 2, 3, 4, 5)
+    )
+    if not has_assistant:
+        LOGGER("YukkiMusic").warning(
+            "No Assistant session configured yet. Bot is starting anyway "
+            "so you can connect one via /addsession <slot> <session_string>."
         )
-        return
     if (
         not config.SPOTIFY_CLIENT_ID
         and not config.SPOTIFY_CLIENT_SECRET
@@ -58,20 +57,21 @@ async def init():
     LOGGER("Yukkimusic.plugins").info(
         "Successfully Imported Modules "
     )
-    await userbot.start()
-    await Yukki.start()
-    try:
-        await Yukki.stream_call(
-            "http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4"
-        )
-    except NoActiveGroupCall:
-        LOGGER("YukkiMusic").error(
-            "[ERROR] - \n\nPlease turn on your Logger Group's Voice Call. Make sure you never close/end voice call in your log group"
-        )
-        sys.exit()
-    except:
-        pass
-    await Yukki.decorators()
+    if has_assistant:
+        await userbot.start()
+        await Yukki.start()
+        try:
+            await Yukki.stream_call(
+                "http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4"
+            )
+        except NoActiveGroupCall:
+            LOGGER("YukkiMusic").error(
+                "[ERROR] - \n\nPlease turn on your Logger Group's Voice Call. Make sure you never close/end voice call in your log group"
+            )
+            sys.exit()
+        except:
+            pass
+        await Yukki.decorators()
     LOGGER("YukkiMusic").info("Yukki Music Bot Started Successfully")
     await idle()
 
