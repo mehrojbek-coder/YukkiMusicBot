@@ -33,11 +33,9 @@ async def add_session(client, message):
     mystic = await message.reply_text("Sessiya tekshirilmoqda...")
 
     test_client = Client(
-        name=f"test_session_{slot}",
+        session_name=session_string,
         api_id=config.API_ID,
         api_hash=config.API_HASH,
-        session_string=session_string,
-        in_memory=True,
         no_updates=True,
     )
     try:
