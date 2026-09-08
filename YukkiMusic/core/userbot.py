@@ -12,49 +12,73 @@ import sys
 from pyrogram import Client
 
 import config
+from YukkiMusic.core.mongo import pymongodb
 
 from ..logging import LOGGER
 
 assistants = []
 assistantids = []
 
+sessionsdb = pymongodb.assistant_sessions
+
+
+def _resolve_session(env_value, slot):
+    """Prefer the env var (STRING1-5); fall back to a session saved
+    via the in-bot /addsession panel and stored in Mongo."""
+    if env_value:
+        return str(env_value)
+    doc = sessionsdb.find_one({"_id": f"string{slot}"})
+    if doc and doc.get("session"):
+        return doc["session"]
+    return None
+
 
 class Userbot(Client):
     def __init__(self):
+        s1 = _resolve_session(config.STRING1, "1")
+        s2 = _resolve_session(config.STRING2, "2")
+        s3 = _resolve_session(config.STRING3, "3")
+        s4 = _resolve_session(config.STRING4, "4")
+        s5 = _resolve_session(config.STRING5, "5")
+        self.session1 = s1
+        self.session2 = s2
+        self.session3 = s3
+        self.session4 = s4
+        self.session5 = s5
         self.one = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING1),
+            session_name=str(s1),
             no_updates=True,
         )
         self.two = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING2),
+            session_name=str(s2),
             no_updates=True,
         )
         self.three = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING3),
+            session_name=str(s3),
             no_updates=True,
         )
         self.four = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING4),
+            session_name=str(s4),
             no_updates=True,
         )
         self.five = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING5),
+            session_name=str(s5),
             no_updates=True,
         )
 
     async def start(self):
         LOGGER(__name__).info(f"Starting Assistant Clients")
-        if config.STRING1:
+        if self.session1:
             await self.one.start()
             try:
                 await self.one.join_chat("TeamYM")
@@ -85,7 +109,7 @@ class Userbot(Client):
             LOGGER(__name__).info(
                 f"Assistant Started as {self.one.name}"
             )
-        if config.STRING2:
+        if self.session2:
             await self.two.start()
             try:
                 await self.two.join_chat("TeamYM")
@@ -116,7 +140,7 @@ class Userbot(Client):
             LOGGER(__name__).info(
                 f"Assistant Two Started as {self.two.name}"
             )
-        if config.STRING3:
+        if self.session3:
             await self.three.start()
             try:
                 await self.three.join_chat("TeamYM")
@@ -147,7 +171,7 @@ class Userbot(Client):
             LOGGER(__name__).info(
                 f"Assistant Three Started as {self.three.name}"
             )
-        if config.STRING4:
+        if self.session4:
             await self.four.start()
             try:
                 await self.four.join_chat("TeamYM")
@@ -178,7 +202,7 @@ class Userbot(Client):
             LOGGER(__name__).info(
                 f"Assistant Four Started as {self.four.name}"
             )
-        if config.STRING5:
+        if self.session5:
             await self.five.start()
             try:
                 await self.five.join_chat("TeamYM")
