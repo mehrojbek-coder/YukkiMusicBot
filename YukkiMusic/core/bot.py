@@ -7,6 +7,7 @@
 #
 # All rights reserved.
 
+import asyncio
 import sys
 
 from pyrogram import Client
@@ -32,15 +33,28 @@ class YukkiBot(Client):
         get_me = await self.get_me()
         self.username = get_me.username
         self.id = get_me.id
-        try:
-            await self.send_message(
-                config.LOG_GROUP_ID, "Bot Started"
+
+        log_ok = False
+        for attempt in range(3):
+            try:
+                await self.send_message(
+                    config.LOG_GROUP_ID, "Bot Started"
+                )
+                log_ok = True
+                break
+            except Exception as e:
+                LOGGER(__name__).warning(
+                    f"Could not reach log group yet (attempt {attempt + 1}/3): "
+                    f"{type(e).__name__}: {e}. Send any message in that group "
+                    f"now — waiting 8s before retrying."
+                )
+                await asyncio.sleep(8)
+        if not log_ok:
+            LOGGER(__name__).warning(
+                "Log group still unreachable — starting anyway without it. "
+                "Send a message in the log group, then use /reload or restart "
+                "the service to pick it up."
             )
-        except Exception as e:
-            LOGGER(__name__).error(
-                f"Bot has failed to access the log Group. Make sure that you have added your bot to your log channel and promoted as admin! Real error: {type(e).__name__}: {e}"
-            )
-            sys.exit()
         if config.SET_CMDS == str(True):
             try:
                 await self.set_bot_commands(
@@ -60,12 +74,15 @@ class YukkiBot(Client):
                 pass
         else:
             pass
-        a = await self.get_chat_member(config.LOG_GROUP_ID, self.id)
-        if a.status != "administrator":
-            LOGGER(__name__).error(
-                "Please promote Bot as Admin in Logger Group"
-            )
-            sys.exit()
+        if log_ok:
+            try:
+                a = await self.get_chat_member(config.LOG_GROUP_ID, self.id)
+                if a.status != "administrator":
+                    LOGGER(__name__).warning(
+                        "Please promote Bot as Admin in Logger Group"
+                    )
+            except Exception:
+                pass
         if get_me.last_name:
             self.name = get_me.first_name + " " + get_me.last_name
         else:
