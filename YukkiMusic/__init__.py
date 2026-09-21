@@ -33,6 +33,18 @@ sudo()
 # Bot Client
 app = YukkiBot()
 
+# Baza zaxirasi / QO'LDA tiklash (faqat OWNER_ID): /backup va .dbdump.json.gz faylni botga yuborish
+import config  # noqa: E402
+
+if config.MONGO_DB_URI:
+    import dbrestore  # noqa: E402
+
+    dbrestore.setup_pyrogram(
+        app,
+        dbrestore.MongoAdapter(config.MONGO_DB_URI, "Yukki", label="yukki"),
+        lambda uid: uid in config.OWNER_ID,
+    )
+
 # Assistant Client
 userbot = Userbot()
 
