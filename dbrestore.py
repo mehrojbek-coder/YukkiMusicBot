@@ -897,13 +897,13 @@ def setup_aiogram(dp, bot, adapter: Adapter, is_owner: Callable[[int], bool], *,
             "Tiklashdan oldin joriy baza nusxasi sizga yuboriladi.\nDavom etamizmi?",
             parse_mode="HTML", reply_markup=confirm_kb(token))
 
-    async def on_menu(m: Message):
-        await m.answer(MENU_TEXT, parse_mode="HTML", reply_markup=menu_kb())
+    async def on_menu(m: Message):          # /baza — darrov butun bazani fayl qilib yuboradi
+        await _send_backup(m, hint=True)
 
     async def on_backup(m: Message):
         await _send_backup(m)
 
-    async def _send_backup(m: Message):
+    async def _send_backup(m: Message, hint: bool = False):
         wait = await m.answer("⏳ Zaxira tayyorlanmoqda...")
         try:
             path, cap = await rs.make_backup()
@@ -915,7 +915,9 @@ def setup_aiogram(dp, bot, adapter: Adapter, is_owner: Callable[[int], bool], *,
             await wait.edit_text(f"❌ Zaxira olishda xato: {e}")
             return
         try:
-            await m.answer_document(FSInputFile(path), caption=cap)
+            kb = InlineKeyboardMarkup(inline_keyboard=[[InlineKeyboardButton(
+                text="📥 Bazani yuklash (tiklash)", callback_data="dbrestore:up")]]) if hint else None
+            await m.answer_document(FSInputFile(path), caption=cap, reply_markup=kb)
             await wait.delete()
         finally:
             try:
@@ -1083,7 +1085,7 @@ def setup_telethon(client, adapter: Adapter, is_owner: Callable[[int], bool], *,
         return [[Button.inline("📥 Bazani yuklash (tiklash)", data=b"dbrestore:up")],
                 [Button.inline("📤 Bazani yuklab olish", data=b"dbrestore:get")]]
 
-    async def _send_backup(event):
+    async def _send_backup(event, hint: bool = False):
         wait = await event.respond("⏳ Zaxira tayyorlanmoqda...")
         try:
             path, cap = await rs.make_backup()
@@ -1095,7 +1097,9 @@ def setup_telethon(client, adapter: Adapter, is_owner: Callable[[int], bool], *,
             await wait.edit(f"❌ Zaxira olishda xato: {e}")
             return
         try:
-            await client.send_file(event.chat_id, path, caption=cap, force_document=True)
+            await client.send_file(event.chat_id, path, caption=cap, force_document=True,
+                                   buttons=[[Button.inline("📥 Bazani yuklash (tiklash)", data=b"dbrestore:up")]]
+                                   if hint else None)
             await wait.delete()
         finally:
             try:
@@ -1106,7 +1110,7 @@ def setup_telethon(client, adapter: Adapter, is_owner: Callable[[int], bool], *,
     @client.on(events.NewMessage(incoming=True, pattern=r"^/baza(@\w+)?\s*$"))
     async def _menu(event):
         if _owner_event(event):
-            await event.respond(_md(MENU_TEXT), buttons=_menu_buttons())
+            await _send_backup(event, hint=True)
             raise events.StopPropagation
 
     if backup_cmd:
@@ -1285,15 +1289,15 @@ def setup_pyrogram(app, adapter: Adapter, is_owner: Callable[[int], bool], *,
             [InlineKeyboardButton("📥 Bazani yuklash (tiklash)", callback_data="dbrestore:up")],
             [InlineKeyboardButton("📤 Bazani yuklab olish", callback_data="dbrestore:get")]])
 
-    async def on_menu(client, m):
-        await m.reply_text(_md(MENU_TEXT), reply_markup=_menu_kb())
+    async def on_menu(client, m):           # /baza — darrov butun bazani fayl qilib yuboradi
+        await _send_backup(m, hint=True)
         raise StopPropagation
 
     async def on_backup(client, m):
         await _send_backup(m)
         raise StopPropagation
 
-    async def _send_backup(m):
+    async def _send_backup(m, hint: bool = False):
         wait = await m.reply_text("⏳ Zaxira tayyorlanmoqda...")
         try:
             path, cap = await rs.make_backup()
@@ -1305,7 +1309,8 @@ def setup_pyrogram(app, adapter: Adapter, is_owner: Callable[[int], bool], *,
             await wait.edit_text(f"❌ Zaxira olishda xato: {e}")
             return
         try:
-            await m.reply_document(path, caption=cap)
+            await m.reply_document(path, caption=cap, reply_markup=InlineKeyboardMarkup([[
+                InlineKeyboardButton("📥 Bazani yuklash (tiklash)", callback_data="dbrestore:up")]]) if hint else None)
             await wait.delete()
         finally:
             try:
