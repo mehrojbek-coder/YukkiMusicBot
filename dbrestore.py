@@ -827,6 +827,28 @@ HELP_TEXT = (
 )
 
 
+MENU_TEXT = "💾 <b>Baza</b>\n\nKerakli amalni tanlang:"
+UP_TEXT = ("📥 <b>Bazani yuklash</b>\n\nZaxira faylini shu chatga <b>hujjat (document)</b> sifatida yuboring.\n"
+           "Fayl 20MB dan katta bo'lsa: <code>/restore_url https://…</code>")
+BUTTON_TEXT = "💾 Baza (yuklash / olish)"
+
+
+def aiogram_button(text: str = BUTTON_TEXT):
+    """Owner panelidagi klaviaturaga qo'shish uchun tugma (aiogram)."""
+    from aiogram.types import InlineKeyboardButton
+    return InlineKeyboardButton(text=text, callback_data="dbrestore:menu")
+
+
+def telethon_button(text: str = BUTTON_TEXT):
+    from telethon import Button
+    return Button.inline(text, data=b"dbrestore:menu")
+
+
+def pyrogram_button(text: str = BUTTON_TEXT):
+    from pyrogram.types import InlineKeyboardButton
+    return InlineKeyboardButton(text, callback_data="dbrestore:menu")
+
+
 def setup_aiogram(dp, bot, adapter: Adapter, is_owner: Callable[[int], bool], *,
                   backup_cmd: bool = True, help_cmd: bool = True, backup_command: str = "backup",
                   before_restart: Optional[Callable[[], Awaitable[None]]] = None) -> Restorer:
@@ -854,6 +876,11 @@ def setup_aiogram(dp, bot, adapter: Adapter, is_owner: Callable[[int], bool], *,
             InlineKeyboardButton(text="❌ Bekor", callback_data=f"dbrestore:no:{token}"),
         ]])
 
+    def menu_kb() -> InlineKeyboardMarkup:
+        return InlineKeyboardMarkup(inline_keyboard=[
+            [InlineKeyboardButton(text="📥 Bazani yuklash (tiklash)", callback_data="dbrestore:up")],
+            [InlineKeyboardButton(text="📤 Bazani yuklab olish", callback_data="dbrestore:get")]])
+
     async def _stage_and_ask(m: Message, path: str, name: str):
         try:
             token, summary = await rs.stage(path, m.from_user.id, name)
@@ -870,7 +897,13 @@ def setup_aiogram(dp, bot, adapter: Adapter, is_owner: Callable[[int], bool], *,
             "Tiklashdan oldin joriy baza nusxasi sizga yuboriladi.\nDavom etamizmi?",
             parse_mode="HTML", reply_markup=confirm_kb(token))
 
+    async def on_menu(m: Message):
+        await m.answer(MENU_TEXT, parse_mode="HTML", reply_markup=menu_kb())
+
     async def on_backup(m: Message):
+        await _send_backup(m)
+
+    async def _send_backup(m: Message):
         wait = await m.answer("⏳ Zaxira tayyorlanmoqda...")
         try:
             path, cap = await rs.make_backup()
@@ -940,10 +973,20 @@ def setup_aiogram(dp, bot, adapter: Adapter, is_owner: Callable[[int], bool], *,
                 pass
 
     async def on_cb(c: CallbackQuery):
-        try:
-            _, action, token = (c.data or "").split(":", 2)
-        except ValueError:
+        parts = (c.data or "").split(":", 2)
+        action = parts[1] if len(parts) > 1 else ""
+        token = parts[2] if len(parts) > 2 else ""
+        if action == "menu":
             await c.answer()
+            await c.message.answer(MENU_TEXT, parse_mode="HTML", reply_markup=menu_kb())
+            return
+        if action == "up":
+            await c.answer()
+            await c.message.answer(UP_TEXT, parse_mode="HTML")
+            return
+        if action == "get":
+            await c.answer("Zaxira tayyorlanmoqda...")
+            await _send_backup(c.message)
             return
         if action == "no":
             rs.cancel(token)
@@ -990,11 +1033,17 @@ def setup_aiogram(dp, bot, adapter: Adapter, is_owner: Callable[[int], bool], *,
     reg = dp.message.register
     reg(on_document, F.document, owner_doc)
     reg(on_url, Command("restore_url"), owner_msg)
+    reg(on_menu, Command("baza"), owner_msg)
     if backup_cmd:
         reg(on_backup, Command(backup_command), owner_msg)
     if help_cmd:
         reg(on_help, Command("restore"), owner_msg)
     dp.callback_query.register(on_cb, F.data.startswith("dbrestore:"), owner_cb)
+
+    async def on_cb_denied(c: CallbackQuery):
+        await c.answer("Bu tugma faqat owner uchun.", show_alert=True)
+
+    dp.callback_query.register(on_cb_denied, F.data.startswith("dbrestore:"))
     return rs
 
 
@@ -1027,29 +1076,45 @@ def setup_telethon(client, adapter: Adapter, is_owner: Callable[[int], bool], *,
             buttons=[[Button.inline("✅ Tiklash", data=f"dbrestore:yes:{token}".encode()),
                       Button.inline("❌ Bekor", data=f"dbrestore:no:{token}".encode())]])
 
+    def _md(t: str) -> str:
+        return t.replace("<b>", "**").replace("</b>", "**").replace("<code>", "`").replace("</code>", "`")
+
+    def _menu_buttons():
+        return [[Button.inline("📥 Bazani yuklash (tiklash)", data=b"dbrestore:up")],
+                [Button.inline("📤 Bazani yuklab olish", data=b"dbrestore:get")]]
+
+    async def _send_backup(event):
+        wait = await event.respond("⏳ Zaxira tayyorlanmoqda...")
+        try:
+            path, cap = await rs.make_backup()
+        except RestoreError as e:
+            await wait.edit(f"❌ {e}")
+            return
+        except Exception as e:
+            log.exception("backup xato")
+            await wait.edit(f"❌ Zaxira olishda xato: {e}")
+            return
+        try:
+            await client.send_file(event.chat_id, path, caption=cap, force_document=True)
+            await wait.delete()
+        finally:
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+
+    @client.on(events.NewMessage(incoming=True, pattern=r"^/baza(@\w+)?\s*$"))
+    async def _menu(event):
+        if _owner_event(event):
+            await event.respond(_md(MENU_TEXT), buttons=_menu_buttons())
+            raise events.StopPropagation
+
     if backup_cmd:
         @client.on(events.NewMessage(incoming=True, pattern=r"^/backup(@\w+)?\s*$"))
         async def _backup(event):
             if not _owner_event(event):
                 return
-            wait = await event.respond("⏳ Zaxira tayyorlanmoqda...")
-            try:
-                path, cap = await rs.make_backup()
-            except RestoreError as e:
-                await wait.edit(f"❌ {e}")
-                return
-            except Exception as e:
-                log.exception("backup xato")
-                await wait.edit(f"❌ Zaxira olishda xato: {e}")
-                return
-            try:
-                await client.send_file(event.chat_id, path, caption=cap, force_document=True)
-                await wait.delete()
-            finally:
-                try:
-                    os.remove(path)
-                except OSError:
-                    pass
+            await _send_backup(event)
             raise events.StopPropagation
 
     @client.on(events.NewMessage(incoming=True, pattern=r"^/restore(@\w+)?\s*$"))
@@ -1115,10 +1180,22 @@ def setup_telethon(client, adapter: Adapter, is_owner: Callable[[int], bool], *,
     @client.on(events.CallbackQuery(pattern=rb"^dbrestore:"))
     async def _cb(event):
         if not (event.sender_id and is_owner(event.sender_id)):
+            await event.answer("Bu tugma faqat owner uchun.", alert=True)
             return
-        try:
-            _, action, token = event.data.decode().split(":", 2)
-        except ValueError:
+        parts = event.data.decode().split(":", 2)
+        action = parts[1] if len(parts) > 1 else ""
+        token = parts[2] if len(parts) > 2 else ""
+        if action == "menu":
+            await event.answer()
+            await event.respond(_md(MENU_TEXT), buttons=_menu_buttons())
+            return
+        if action == "up":
+            await event.answer()
+            await event.respond(_md(UP_TEXT))
+            return
+        if action == "get":
+            await event.answer("Zaxira tayyorlanmoqda...")
+            await _send_backup(event)
             return
         if action == "no":
             rs.cancel(token)
@@ -1200,7 +1277,23 @@ def setup_pyrogram(app, adapter: Adapter, is_owner: Callable[[int], bool], *,
                 InlineKeyboardButton("✅ Tiklash", callback_data=f"dbrestore:yes:{token}"),
                 InlineKeyboardButton("❌ Bekor", callback_data=f"dbrestore:no:{token}")]]))
 
+    def _md(t: str) -> str:
+        return t.replace("<b>", "**").replace("</b>", "**").replace("<code>", "`").replace("</code>", "`")
+
+    def _menu_kb():
+        return InlineKeyboardMarkup([
+            [InlineKeyboardButton("📥 Bazani yuklash (tiklash)", callback_data="dbrestore:up")],
+            [InlineKeyboardButton("📤 Bazani yuklab olish", callback_data="dbrestore:get")]])
+
+    async def on_menu(client, m):
+        await m.reply_text(_md(MENU_TEXT), reply_markup=_menu_kb())
+        raise StopPropagation
+
     async def on_backup(client, m):
+        await _send_backup(m)
+        raise StopPropagation
+
+    async def _send_backup(m):
         wait = await m.reply_text("⏳ Zaxira tayyorlanmoqda...")
         try:
             path, cap = await rs.make_backup()
@@ -1219,7 +1312,6 @@ def setup_pyrogram(app, adapter: Adapter, is_owner: Callable[[int], bool], *,
                 os.remove(path)
             except OSError:
                 pass
-        raise StopPropagation
 
     async def on_help(client, m):
         await m.reply_text(HELP_TEXT.format(bk="backup").replace("<b>", "**").replace("</b>", "**")
@@ -1272,9 +1364,20 @@ def setup_pyrogram(app, adapter: Adapter, is_owner: Callable[[int], bool], *,
         raise StopPropagation
 
     async def on_cb(client, q):
-        try:
-            _, action, token = (q.data or "").split(":", 2)
-        except ValueError:
+        parts = (q.data or "").split(":", 2)
+        action = parts[1] if len(parts) > 1 else ""
+        token = parts[2] if len(parts) > 2 else ""
+        if action == "menu":
+            await q.answer()
+            await q.message.reply_text(_md(MENU_TEXT), reply_markup=_menu_kb())
+            return
+        if action == "up":
+            await q.answer()
+            await q.message.reply_text(_md(UP_TEXT))
+            return
+        if action == "get":
+            await q.answer("Zaxira tayyorlanmoqda...")
+            await _send_backup(q.message)
             return
         if action == "no":
             rs.cancel(token)
@@ -1305,8 +1408,14 @@ def setup_pyrogram(app, adapter: Adapter, is_owner: Callable[[int], bool], *,
 
     app.add_handler(MessageHandler(on_document, filters.document & doc_f & owner_f), group=group)
     app.add_handler(MessageHandler(on_url, filters.command("restore_url") & owner_f), group=group)
+    app.add_handler(MessageHandler(on_menu, filters.command("baza") & owner_f), group=group)
     if backup_cmd:
         app.add_handler(MessageHandler(on_backup, filters.command("backup") & owner_f), group=group)
     app.add_handler(MessageHandler(on_help, filters.command("restore") & owner_f), group=group)
     app.add_handler(CallbackQueryHandler(on_cb, filters.regex(r"^dbrestore:") & cb_owner_f), group=group)
+
+    async def on_cb_denied(client, q):
+        await q.answer("Bu tugma faqat owner uchun.", show_alert=True)
+
+    app.add_handler(CallbackQueryHandler(on_cb_denied, filters.regex(r"^dbrestore:")), group=group)
     return rs
