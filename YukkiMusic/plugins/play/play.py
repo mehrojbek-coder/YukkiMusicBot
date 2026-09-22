@@ -388,7 +388,8 @@ async def play_commnd(
             details, track_id = await YouTube.track(query)
         except ValueError:
             return await mystic.edit_text(_["play_no_results"])
-        except Exception:
+        except Exception as e:
+            print(f"[play_3 debug] YouTube.track({query!r}) failed: {type(e).__name__}: {e}")
             return await mystic.edit_text(_["play_3"])
         streamtype = "youtube"
     if str(playmode) == "Direct":
