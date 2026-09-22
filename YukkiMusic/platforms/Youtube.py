@@ -188,7 +188,13 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         results = VideosSearch(link, limit=1)
-        for result in (await results.next())["result"]:
+        search = await results.next()
+        result_list = search["result"]
+        if not result_list:
+            # YouTube qidiruvi hech narsa topmadi — oldin bu yerda UnboundLocalError
+            # chiqib, foydalanuvchiga umumiy "Failed to Process Query!" ko'rsatilardi.
+            raise ValueError(f"No YouTube results found for query: {link!r}")
+        for result in result_list:
             title = result["title"]
             duration_min = result["duration"]
             vidid = result["id"]

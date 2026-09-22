@@ -386,6 +386,8 @@ async def play_commnd(
             query = query.replace("-v", "")
         try:
             details, track_id = await YouTube.track(query)
+        except ValueError:
+            return await mystic.edit_text(_["play_no_results"])
         except Exception:
             return await mystic.edit_text(_["play_3"])
         streamtype = "youtube"
