@@ -40,6 +40,15 @@ else:
 
 def _cookie_opts() -> dict:
     return {"cookiefile": COOKIES_FILE} if COOKIES_FILE else {}
+
+
+def _extra_opts() -> dict:
+    """cookie sozlamasi + 'The page needs to be reloaded' / signature xatolariga qarshi
+    keng tarqalgan yechim: YouTube'ning android klientini simulyatsiya qilish — bu klient
+    veb-sahifa JS imzosini talab qilmaydi, shu sabab ko'p hollarda bu xatoni chetlab o'tadi."""
+    opts = {"extractor_args": {"youtube": {"player_client": ["android", "web"]}}}
+    opts.update(_cookie_opts())
+    return opts
 from YukkiMusic.utils.database import is_on_off
 from YukkiMusic.utils.formatters import time_to_seconds
 
@@ -169,6 +178,7 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         _cookie_args = ["--cookies", COOKIES_FILE] if COOKIES_FILE else []
+        _cookie_args += ["--extractor-args", "youtube:player_client=android,web"]
         proc = await asyncio.create_subprocess_exec(
             "yt-dlp",
             "-g",
@@ -241,7 +251,7 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         ytdl_opts = {"quiet": True}
-        ytdl_opts.update(_cookie_opts())
+        ytdl_opts.update(_extra_opts())
         ydl = yt_dlp.YoutubeDL(ytdl_opts)
         with ydl:
             formats_available = []
@@ -316,7 +326,7 @@ class YouTubeAPI:
                 "quiet": True,
                 "no_warnings": True,
             }
-            ydl_optssx.update(_cookie_opts())
+            ydl_optssx.update(_extra_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
             xyz = os.path.join(
@@ -336,7 +346,7 @@ class YouTubeAPI:
                 "quiet": True,
                 "no_warnings": True,
             }
-            ydl_optssx.update(_cookie_opts())
+            ydl_optssx.update(_extra_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
             xyz = os.path.join(
@@ -360,7 +370,7 @@ class YouTubeAPI:
                 "prefer_ffmpeg": True,
                 "merge_output_format": "mp4",
             }
-            ydl_optssx.update(_cookie_opts())
+            ydl_optssx.update(_extra_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             x.download([link])
 
@@ -382,7 +392,7 @@ class YouTubeAPI:
                     }
                 ],
             }
-            ydl_optssx.update(_cookie_opts())
+            ydl_optssx.update(_extra_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             x.download([link])
 
@@ -402,6 +412,7 @@ class YouTubeAPI:
                 )
             else:
                 _cookie_args = ["--cookies", COOKIES_FILE] if COOKIES_FILE else []
+                _cookie_args += ["--extractor-args", "youtube:player_client=android,web"]
                 proc = await asyncio.create_subprocess_exec(
                     "yt-dlp",
                     "-g",
