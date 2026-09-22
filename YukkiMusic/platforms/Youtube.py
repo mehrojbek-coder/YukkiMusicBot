@@ -46,7 +46,7 @@ def _extra_opts() -> dict:
     """cookie sozlamasi + 'The page needs to be reloaded' / signature xatolariga qarshi
     keng tarqalgan yechim: YouTube'ning android klientini simulyatsiya qilish — bu klient
     veb-sahifa JS imzosini talab qilmaydi, shu sabab ko'p hollarda bu xatoni chetlab o'tadi."""
-    opts = {"extractor_args": {"youtube": {"player_client": ["android", "web"]}}}
+    opts = {"extractor_args": {"youtube": {"player_client": ["android", "ios", "web"]}}}
     opts.update(_cookie_opts())
     return opts
 from YukkiMusic.utils.database import is_on_off
@@ -178,7 +178,7 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         _cookie_args = ["--cookies", COOKIES_FILE] if COOKIES_FILE else []
-        _cookie_args += ["--extractor-args", "youtube:player_client=android,web"]
+        _cookie_args += ["--extractor-args", "youtube:player_client=android,ios,web"]
         proc = await asyncio.create_subprocess_exec(
             "yt-dlp",
             "-g",
@@ -319,7 +319,7 @@ class YouTubeAPI:
 
         def audio_dl():
             ydl_optssx = {
-                "format": "bestaudio/best",
+                "format": "bestaudio[ext=m4a]/bestaudio/best[ext=mp4]/best",
                 "outtmpl": "downloads/%(id)s.%(ext)s",
                 "geo_bypass": True,
                 "nocheckcertificate": True,
@@ -412,7 +412,7 @@ class YouTubeAPI:
                 )
             else:
                 _cookie_args = ["--cookies", COOKIES_FILE] if COOKIES_FILE else []
-                _cookie_args += ["--extractor-args", "youtube:player_client=android,web"]
+                _cookie_args += ["--extractor-args", "youtube:player_client=android,ios,web"]
                 proc = await asyncio.create_subprocess_exec(
                     "yt-dlp",
                     "-g",
