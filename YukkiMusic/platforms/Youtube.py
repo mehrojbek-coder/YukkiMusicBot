@@ -18,6 +18,28 @@ from pyrogram.types import Message
 from youtubesearchpython.__future__ import VideosSearch
 
 import config
+
+# ── YouTube cookies (ixtiyoriy, lekin 2024+dan beri KO'P VIDEO uchun SHART) ──
+# YouTube endi ko'p so'rovlarni (hatto mashhur, haqiqiy videolarni ham) cookies'siz
+# "Video unavailable" deb rad etadi (bot/scraping ekanligini aniqlashi sababli).
+# Railway'da YT_COOKIES environment variable'iga Netscape formatidagi cookies.txt
+# MATNINI (butun faylni) qo'ysangiz, bot uni shu yerda /app/cookies.txt qilib yozadi
+# va yt-dlp'ning har bir chaqiruviga avtomatik ulaydi. Qo'yilmasa — avvalgidek ishlaydi
+# (cookiesiz), ya'ni bu o'zgarish orqaga mos (backward compatible).
+COOKIES_FILE = os.path.join(os.getcwd(), "cookies.txt")
+_yt_cookies_content = os.environ.get("YT_COOKIES", "").strip()
+if _yt_cookies_content:
+    try:
+        with open(COOKIES_FILE, "w", encoding="utf-8") as _f:
+            _f.write(_yt_cookies_content + "\n")
+    except OSError:
+        COOKIES_FILE = None
+else:
+    COOKIES_FILE = None
+
+
+def _cookie_opts() -> dict:
+    return {"cookiefile": COOKIES_FILE} if COOKIES_FILE else {}
 from YukkiMusic.utils.database import is_on_off
 from YukkiMusic.utils.formatters import time_to_seconds
 
@@ -146,11 +168,13 @@ class YouTubeAPI:
             link = self.base + link
         if "&" in link:
             link = link.split("&")[0]
+        _cookie_args = ["--cookies", COOKIES_FILE] if COOKIES_FILE else []
         proc = await asyncio.create_subprocess_exec(
             "yt-dlp",
             "-g",
             "-f",
             "best[height<=?720][width<=?1280]",
+            *_cookie_args,
             f"{link}",
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE,
@@ -217,6 +241,7 @@ class YouTubeAPI:
         if "&" in link:
             link = link.split("&")[0]
         ytdl_opts = {"quiet": True}
+        ytdl_opts.update(_cookie_opts())
         ydl = yt_dlp.YoutubeDL(ytdl_opts)
         with ydl:
             formats_available = []
@@ -291,6 +316,7 @@ class YouTubeAPI:
                 "quiet": True,
                 "no_warnings": True,
             }
+            ydl_optssx.update(_cookie_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
             xyz = os.path.join(
@@ -310,6 +336,7 @@ class YouTubeAPI:
                 "quiet": True,
                 "no_warnings": True,
             }
+            ydl_optssx.update(_cookie_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             info = x.extract_info(link, False)
             xyz = os.path.join(
@@ -333,6 +360,7 @@ class YouTubeAPI:
                 "prefer_ffmpeg": True,
                 "merge_output_format": "mp4",
             }
+            ydl_optssx.update(_cookie_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             x.download([link])
 
@@ -354,6 +382,7 @@ class YouTubeAPI:
                     }
                 ],
             }
+            ydl_optssx.update(_cookie_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
             x.download([link])
 
@@ -372,11 +401,13 @@ class YouTubeAPI:
                     None, video_dl
                 )
             else:
+                _cookie_args = ["--cookies", COOKIES_FILE] if COOKIES_FILE else []
                 proc = await asyncio.create_subprocess_exec(
                     "yt-dlp",
                     "-g",
                     "-f",
                     "best[height<=?720][width<=?1280]",
+                    *_cookie_args,
                     f"{link}",
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
