@@ -96,7 +96,8 @@ async def stream(
                     file_path, direct = await YouTube.download(
                         vidid, mystic, video=status, videoid=True
                     )
-                except:
+                except Exception as e:
+                    print(f"[play_16 debug] YouTube.download({vidid!r}) failed: {type(e).__name__}: {e}")
                     raise AssistantErr(_["play_16"])
                 await Yukki.join_call(
                     chat_id, original_chat_id, file_path, video=status
@@ -155,7 +156,8 @@ async def stream(
             file_path, direct = await YouTube.download(
                 vidid, mystic, videoid=True, video=status
             )
-        except:
+        except Exception as e:
+            print(f"[play_16 debug] YouTube.download({vidid!r}) failed: {type(e).__name__}: {e}")
             raise AssistantErr(_["play_16"])
         if await is_active_chat(chat_id):
             await put_queue(
