@@ -22,4 +22,9 @@ telethon
 tgcrypto
 youtube-search
 youtube-search-python
+# HOTFIX: youtube-search-python hali httpx'ning eski AsyncClient(proxies=...)
+# argumentiga tayanadi. httpx>=0.28 bu argumentni olib tashladi va bu HAR BIR
+# qidiruvni (/play <matn>) "Failed to Process Query!" bilan yiqitardi
+# (TypeError: AsyncClient.__init__() got an unexpected keyword argument 'proxies').
+httpx<0.28
 git+https://github.com/yt-dlp/yt-dlp.git
