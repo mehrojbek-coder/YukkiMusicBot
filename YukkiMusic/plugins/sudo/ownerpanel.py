@@ -108,13 +108,9 @@ def _ck_view():
 
 
 def _ck_test_sync():
-    opts = {
-        "quiet": True,
-        "no_warnings": True,
-        "skip_download": True,
-        "extractor_args": {"youtube": {"player_client": ["android", "ios", "web"]}},
-    }
-    opts.update(_yt_module._cookie_opts())
+    opts = {"quiet": True, "no_warnings": True, "skip_download": True}
+    # botning haqiqiy yuklashi bilan bir xil sozlamalar (cookie + JS imzo yechuvchi)
+    opts.update(_yt_module._extra_opts())
     with yt_dlp.YoutubeDL(opts) as ydl:
         info = ydl.extract_info(TEST_URL, download=False)
     return bool(info and info.get("id"))
