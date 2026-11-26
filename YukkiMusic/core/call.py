@@ -39,6 +39,7 @@ from YukkiMusic.utils.database import (add_active_chat,
                                        remove_active_chat,
                                        remove_active_video_chat,
                                        set_loop)
+from YukkiMusic.core.userbot import _resolve_session
 from YukkiMusic.utils.exceptions import AssistantErr
 from YukkiMusic.utils.inline.play import (stream_markup,
                                           telegram_markup)
@@ -58,10 +59,18 @@ async def _clear_(chat_id):
 
 class Call(PyTgCalls):
     def __init__(self):
+        # env STRING_SESSION* yoki /owner panel orqali Mongo'ga saqlangan session
+        self._sess = {
+            1: _resolve_session(config.STRING1, "1"),
+            2: _resolve_session(config.STRING2, "2"),
+            3: _resolve_session(config.STRING3, "3"),
+            4: _resolve_session(config.STRING4, "4"),
+            5: _resolve_session(config.STRING5, "5"),
+        }
         self.userbot1 = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING1),
+            session_name=str(self._sess[1]),
         )
         self.one = PyTgCalls(
             self.userbot1,
@@ -70,7 +79,7 @@ class Call(PyTgCalls):
         self.userbot2 = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING2),
+            session_name=str(self._sess[2]),
         )
         self.two = PyTgCalls(
             self.userbot2,
@@ -79,7 +88,7 @@ class Call(PyTgCalls):
         self.userbot3 = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING3),
+            session_name=str(self._sess[3]),
         )
         self.three = PyTgCalls(
             self.userbot3,
@@ -88,7 +97,7 @@ class Call(PyTgCalls):
         self.userbot4 = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING4),
+            session_name=str(self._sess[4]),
         )
         self.four = PyTgCalls(
             self.userbot4,
@@ -97,7 +106,7 @@ class Call(PyTgCalls):
         self.userbot5 = Client(
             api_id=config.API_ID,
             api_hash=config.API_HASH,
-            session_name=str(config.STRING5),
+            session_name=str(self._sess[5]),
         )
         self.five = PyTgCalls(
             self.userbot5,
@@ -530,29 +539,29 @@ class Call(PyTgCalls):
 
     async def ping(self):
         pings = []
-        if config.STRING1:
+        if self._sess[1]:
             pings.append(await self.one.ping)
-        if config.STRING2:
+        if self._sess[2]:
             pings.append(await self.two.ping)
-        if config.STRING3:
+        if self._sess[3]:
             pings.append(await self.three.ping)
-        if config.STRING4:
+        if self._sess[4]:
             pings.append(await self.four.ping)
-        if config.STRING5:
+        if self._sess[5]:
             pings.append(await self.five.ping)
         return str(round(sum(pings) / len(pings), 3))
 
     async def start(self):
         LOGGER(__name__).info("Starting PyTgCalls Client\n")
-        if config.STRING1:
+        if self._sess[1]:
             await self.one.start()
-        if config.STRING2:
+        if self._sess[2]:
             await self.two.start()
-        if config.STRING3:
+        if self._sess[3]:
             await self.three.start()
-        if config.STRING4:
+        if self._sess[4]:
             await self.four.start()
-        if config.STRING5:
+        if self._sess[5]:
             await self.five.start()
 
     async def decorators(self):
