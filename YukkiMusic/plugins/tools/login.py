@@ -89,7 +89,7 @@ async def login_cancel(client, message):
     & filters.private
     & SUDOERS
     & ~filters.command(
-        ["login", "cancellogin", "addsession", "delsession", "start", "help"]
+        ["login", "cancellogin", "addsession", "delsession", "owner", "start", "help"]
     )
 )
 async def login_flow(client, message):
