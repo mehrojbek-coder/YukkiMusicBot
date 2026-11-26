@@ -8,6 +8,7 @@
 
 import asyncio
 import os
+import time
 
 from pyrogram import filters
 from pyrogram.types import (InlineKeyboardButton,
@@ -15,11 +16,14 @@ from pyrogram.types import (InlineKeyboardButton,
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 
+import yt_dlp
+
 import config
 from YukkiMusic import app
 from YukkiMusic.core.mongo import pymongodb
 from YukkiMusic.core.userbot import _resolve_session
 from YukkiMusic.misc import SUDOERS
+from YukkiMusic.platforms import Youtube as _yt_module
 from YukkiMusic.plugins.tools.login import (CODE_KB, code_type_text,
                                             login_sessions)
 
@@ -42,6 +46,7 @@ def _main_kb():
         [
             [InlineKeyboardButton("👤 Assistantlar", callback_data="own_list")],
             [InlineKeyboardButton("➕ Assistant qo'shish", callback_data="own_add")],
+            [InlineKeyboardButton("🍪 YouTube cookies", callback_data="own_ck")],
             [InlineKeyboardButton("◀️ Orqaga", callback_data="own_close")],
         ]
     )
@@ -69,6 +74,111 @@ def _list_view():
     return "\n".join(lines), InlineKeyboardMarkup(rows)
 
 
+# ── YouTube cookies ──────────────────────────────────────────────────────────
+cookie_wait = set()  # cookies.txt faylini kutayotgan owner id'lari
+TEST_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+ck_db = pymongodb.settings
+
+
+def _ck_status():
+    doc = ck_db.find_one({"_id": "yt_cookies"})
+    if _yt_module.COOKIES_FILE:
+        when = ""
+        if doc and doc.get("ts"):
+            when = " (yuklangan: " + time.strftime(
+                "%Y-%m-%d %H:%M", time.gmtime(doc["ts"])
+            ) + " UTC)"
+        return f"✅ Cookie yuklangan{when}"
+    return "▫️ Cookie yo'q — YouTube serverni bot deb to'sishi mumkin"
+
+
+def _ck_view():
+    rows = [[InlineKeyboardButton("📤 cookies.txt yuklash", callback_data="own_ckup")]]
+    if _yt_module.COOKIES_FILE:
+        rows.append([InlineKeyboardButton("🧪 Tekshirish", callback_data="own_ckt")])
+        rows.append([InlineKeyboardButton("🗑 O'chirish", callback_data="own_ckdel")])
+    rows.append([InlineKeyboardButton("◀️ Orqaga", callback_data="own_back")])
+    text = (
+        "🍪 **YouTube cookies**\n\n"
+        f"{_ck_status()}\n\n"
+        "YouTube server IP'larini bot deb to'sadi. Zaxira Google akkaunt cookie'si "
+        "bilan musiqa yuklanadi."
+    )
+    return text, InlineKeyboardMarkup(rows)
+
+
+def _ck_test_sync():
+    opts = {
+        "quiet": True,
+        "no_warnings": True,
+        "skip_download": True,
+        "extractor_args": {"youtube": {"player_client": ["android", "ios", "web"]}},
+    }
+    opts.update(_yt_module._cookie_opts())
+    with yt_dlp.YoutubeDL(opts) as ydl:
+        info = ydl.extract_info(TEST_URL, download=False)
+    return bool(info and info.get("id"))
+
+
+async def _ck_test():
+    loop = asyncio.get_event_loop()
+    try:
+        ok = await asyncio.wait_for(
+            loop.run_in_executor(None, _ck_test_sync), timeout=90
+        )
+        return ok, ""
+    except Exception as e:
+        return False, str(e)[:200]
+
+
+@app.on_message(filters.private & filters.document & SUDOERS, group=-2)
+async def owner_cookie_file(client, message):
+    uid = message.from_user.id
+    if uid not in cookie_wait:
+        return
+    doc = message.document
+    if doc.file_size and doc.file_size > 2 * 1024 * 1024:
+        return await message.reply_text(
+            "Fayl juda katta (2 MB dan oshmasligi kerak). `cookies.txt` yuboring."
+        )
+    path = await message.download(file_name=f"/tmp/ck_{uid}.txt")
+    try:
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+            content = f.read()
+    finally:
+        try:
+            os.remove(path)
+        except OSError:
+            pass
+    kb = InlineKeyboardMarkup(
+        [[InlineKeyboardButton("◀️ Orqaga", callback_data="own_ck")]]
+    )
+    if "youtube.com" not in content or "\t" not in content:
+        return await message.reply_text(
+            "❌ Bu Netscape formatidagi `youtube.com` cookies.txt emas. "
+            "Qayta eksport qilib yuboring.",
+            reply_markup=kb,
+        )
+    cookie_wait.discard(uid)
+    ck_db.update_one(
+        {"_id": "yt_cookies"},
+        {"$set": {"content": content, "ts": int(time.time())}},
+        upsert=True,
+    )
+    _yt_module.apply_cookies(content)
+    wait = await message.reply_text("✅ Cookie saqlandi. Tekshirilmoqda...")
+    ok, err = await _ck_test()
+    if ok:
+        text = "✅ Cookie ishlayapti! Endi guruhda `/play` ni sinab ko'ring."
+    else:
+        text = (
+            "⚠️ Cookie saqlandi, lekin tekshiruv o'tmadi:\n"
+            f"`{err or 'nomalum xato'}`\n\n"
+            "Inkognito oynada qayta eksport qilib ko'ring."
+        )
+    await wait.edit_text(text, reply_markup=kb)
+
+
 @app.on_message(filters.command("owner") & SUDOERS)
 async def owner_cmd(client, message):
     if message.chat.type != "private":
@@ -94,6 +204,37 @@ async def owner_cb(client, cq):
     if data == "own_back":
         await cq.answer()
         return await cq.message.edit_text(MAIN_TEXT, reply_markup=_main_kb())
+
+    if data == "own_ck":
+        cookie_wait.discard(uid)
+        await cq.answer()
+        text, kb = _ck_view()
+        return await cq.message.edit_text(text, reply_markup=kb)
+
+    if data == "own_ckup":
+        cookie_wait.add(uid)
+        await cq.answer()
+        return await cq.message.edit_text(
+            "📤 Endi `cookies.txt` faylini shu chatga **fayl qilib** yuboring "
+            "(Netscape format, `youtube.com` cookie'lari).",
+            reply_markup=InlineKeyboardMarkup(
+                [[InlineKeyboardButton("◀️ Orqaga", callback_data="own_ck")]]
+            ),
+        )
+
+    if data == "own_ckt":
+        await cq.answer("Tekshirilmoqda...")
+        ok, err = await _ck_test()
+        text, kb = _ck_view()
+        res = "✅ Test o'tdi" if ok else f"❌ Test o'tmadi: `{err}`"
+        return await cq.message.edit_text(f"{text}\n\n{res}", reply_markup=kb)
+
+    if data == "own_ckdel":
+        ck_db.delete_one({"_id": "yt_cookies"})
+        _yt_module.apply_cookies("")
+        await cq.answer("O'chirildi")
+        text, kb = _ck_view()
+        return await cq.message.edit_text(text, reply_markup=kb)
 
     if data == "own_list":
         await cq.answer()

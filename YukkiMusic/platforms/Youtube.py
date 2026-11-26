@@ -26,16 +26,48 @@ import config
 # MATNINI (butun faylni) qo'ysangiz, bot uni shu yerda /app/cookies.txt qilib yozadi
 # va yt-dlp'ning har bir chaqiruviga avtomatik ulaydi. Qo'yilmasa — avvalgidek ishlaydi
 # (cookiesiz), ya'ni bu o'zgarish orqaga mos (backward compatible).
-COOKIES_FILE = os.path.join(os.getcwd(), "cookies.txt")
-_yt_cookies_content = os.environ.get("YT_COOKIES", "").strip()
-if _yt_cookies_content:
-    try:
-        with open(COOKIES_FILE, "w", encoding="utf-8") as _f:
-            _f.write(_yt_cookies_content + "\n")
-    except OSError:
+COOKIES_PATH = os.path.join(os.getcwd(), "cookies.txt")
+COOKIES_FILE = None
+
+
+def apply_cookies(content: str) -> bool:
+    """Cookie matnini faylga yozib, yt-dlp'ga ulaydi (restart shart emas).
+    Bo'sh matn berilsa cookie o'chiriladi."""
+    global COOKIES_FILE
+    content = (content or "").strip()
+    if not content:
         COOKIES_FILE = None
-else:
-    COOKIES_FILE = None
+        try:
+            os.remove(COOKIES_PATH)
+        except OSError:
+            pass
+        return True
+    try:
+        with open(COOKIES_PATH, "w", encoding="utf-8") as _f:
+            _f.write(content + "\n")
+    except OSError:
+        return False
+    COOKIES_FILE = COOKIES_PATH
+    return True
+
+
+def _load_cookies_on_start():
+    # 1) env (YT_COOKIES), 2) /owner panel orqali Mongo'ga saqlangan cookie
+    env_content = os.environ.get("YT_COOKIES", "").strip()
+    if env_content:
+        apply_cookies(env_content)
+        return
+    try:
+        from YukkiMusic.core.mongo import pymongodb
+
+        doc = pymongodb.settings.find_one({"_id": "yt_cookies"})
+        if doc and doc.get("content"):
+            apply_cookies(doc["content"])
+    except Exception:
+        pass
+
+
+_load_cookies_on_start()
 
 
 def _cookie_opts() -> dict:
