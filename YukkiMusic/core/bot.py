@@ -10,6 +10,8 @@
 import asyncio
 import sys
 
+import os
+
 from pyrogram import Client
 from pyrogram.types import BotCommand
 
@@ -21,8 +23,16 @@ from ..logging import LOGGER
 class YukkiBot(Client):
     def __init__(self):
         LOGGER(__name__).info(f"Starting Bot")
+        # Sessiya fayli (guruhlarni "eslab qolish" xotirasi) docker volume'da saqlanadi,
+        # shunda bot yangilansa ham log guruhi "Peer id invalid" bo'lib qolmaydi.
+        session_dir = os.environ.get("SESSION_DIR", "/app/sessions")
+        try:
+            os.makedirs(session_dir, exist_ok=True)
+        except OSError:
+            session_dir = "."
         super().__init__(
             "YukkiMusicBot",
+            workdir=session_dir,
             api_id=config.API_ID,
             api_hash=config.API_HASH,
             bot_token=config.BOT_TOKEN,
