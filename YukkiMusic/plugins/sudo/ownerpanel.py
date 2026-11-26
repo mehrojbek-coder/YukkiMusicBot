@@ -20,7 +20,8 @@ from YukkiMusic import app
 from YukkiMusic.core.mongo import pymongodb
 from YukkiMusic.core.userbot import _resolve_session
 from YukkiMusic.misc import SUDOERS
-from YukkiMusic.plugins.tools.login import login_sessions
+from YukkiMusic.plugins.tools.login import (CODE_KB, code_type_text,
+                                            login_sessions)
 
 sessionsdb = pymongodb.assistant_sessions
 SLOTS = ("1", "2", "3", "4", "5")
@@ -182,6 +183,25 @@ async def owner_cb(client, cq):
             reply_markup=InlineKeyboardMarkup(
                 [[InlineKeyboardButton("◀️ Orqaga", callback_data="own_addcancel")]]
             ),
+        )
+
+    if data == "own_resend":
+        sess = login_sessions.get(uid)
+        if not sess or sess.get("stage") != "code":
+            await cq.answer("Faol login jarayoni yo'q", show_alert=True)
+            return
+        try:
+            sent = await sess["client"].send_code_request(
+                sess["phone"], force_sms=True
+            )
+        except Exception as e:
+            await cq.answer(f"Xatolik: {type(e).__name__}", show_alert=True)
+            return
+        await cq.answer("Qayta yuborildi")
+        return await cq.message.reply_text(
+            f"📨 Kod qayta yuborildi: **{code_type_text(sent)}**.\n"
+            "SMS bir necha daqiqa kechikishi mumkin. Kelgach kodni (`1 2 3 4 5` ko'rinishida) yuboring.",
+            reply_markup=CODE_KB,
         )
 
     if data == "own_addcancel":

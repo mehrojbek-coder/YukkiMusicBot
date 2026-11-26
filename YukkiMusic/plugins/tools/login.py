@@ -18,6 +18,7 @@ import os
 import struct
 
 from pyrogram import filters
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from telethon import TelegramClient
 from telethon.sessions import StringSession
 from telethon.errors import (
@@ -46,6 +47,25 @@ def _pack_pyrogram_session(dc_id, auth_key, user_id, is_bot):
     fmt = ">B?256sI?" if user_id < MAX_USER_ID_OLD else ">B?256sQ?"
     packed = struct.pack(fmt, dc_id, False, auth_key, user_id, is_bot)
     return base64.urlsafe_b64encode(packed).decode().rstrip("=")
+
+
+def code_type_text(sent):
+    """Telegram kodni qaysi yo'l bilan yuborganini o'zbekcha matnga aylantiradi."""
+    name = type(getattr(sent, "type", None)).__name__
+    return {
+        "SentCodeTypeApp": "Telegram ilovasiga (shu akkaunt ochiq boshqa qurilmadagi «Telegram» xizmat chatiga)",
+        "SentCodeTypeSms": "SMS orqali telefon raqamga",
+        "SentCodeTypeCall": "telefon qo'ng'irog'i orqali",
+        "SentCodeTypeFlashCall": "flash-qo'ng'iroq orqali",
+    }.get(name, name)
+
+
+CODE_KB = InlineKeyboardMarkup(
+    [
+        [InlineKeyboardButton("📩 SMS orqali qayta yuborish", callback_data="own_resend")],
+        [InlineKeyboardButton("◀️ Orqaga", callback_data="own_addcancel")],
+    ]
+)
 
 
 @app.on_message(filters.command("login") & SUDOERS)
@@ -103,7 +123,7 @@ async def login_flow(client, message):
     if sess["stage"] == "phone":
         phone = text
         try:
-            await tclient.send_code_request(phone)
+            sent = await tclient.send_code_request(phone)
         except FloodWaitError as e:
             await message.reply_text(
                 f"Juda ko'p urinish qilindi, {e.seconds} soniyadan keyin qayta urining."
@@ -119,10 +139,13 @@ async def login_flow(client, message):
         sess["phone"] = phone
         sess["stage"] = "code"
         await message.reply_text(
+            f"📨 Kod yuborildi: **{code_type_text(sent)}**.\n\n"
             "Telegram'dan kelgan tasdiqlash kodini yuboring.\n\n"
             "⚠️ **Muhim:** Telegram ba'zan kodni boshqa chatga (shu jumladan botga) "
             "yozganingizda avtomatik bekor qilib qo'yadi. Agar «kod noto'g'ri» xatosi "
-            "chiqsa, raqamlar orasiga bo'shliq qo'yib qayta yuboring, masalan: `1 2 3 4 5`."
+            "chiqsa, raqamlar orasiga bo'shliq qo'yib qayta yuboring, masalan: `1 2 3 4 5`.\n\n"
+            "Kod kelmasa — pastdagi tugma bilan SMS orqali qayta yuboring.",
+            reply_markup=CODE_KB,
         )
         return
 
