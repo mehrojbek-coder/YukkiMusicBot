@@ -75,10 +75,10 @@ async def init():
                 "http://docs.evostream.com/sample_content/assets/sintel1m720p.mp4"
             )
         except NoActiveGroupCall:
-            LOGGER("YukkiMusic").error(
-                "[ERROR] - \n\nPlease turn on your Logger Group's Voice Call. Make sure you never close/end voice call in your log group"
+            # Log guruhidagi ovozli chat shart emas: bot istalgan guruhda ishlayveradi.
+            LOGGER("YukkiMusic").warning(
+                "Log guruhida ovozli chat yoqilmagan (bu to'xtatmaydi, ixtiyoriy tekshiruv)."
             )
-            sys.exit()
         except:
             pass
         await Yukki.decorators()
