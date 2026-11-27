@@ -350,7 +350,20 @@ class YouTubeAPI:
             link = self.base + link
         loop = asyncio.get_running_loop()
 
+        def _cached(link_):
+            # Fayl allaqachon yuklangan bo'lsa, hech narsa so'ramaymiz (bir zumda)
+            vid = link_.split("v=")[-1].split("&")[0] if "v=" in link_ else ""
+            if vid:
+                for ext in ("m4a", "webm", "mp4", "opus", "mp3"):
+                    f = os.path.join("downloads", f"{vid}.{ext}")
+                    if os.path.exists(f) and os.path.getsize(f) > 0:
+                        return f
+            return None
+
         def audio_dl():
+            hit = _cached(link)
+            if hit:
+                return hit
             ydl_optssx = {
                 "format": "bestaudio[ext=m4a]/bestaudio/best[ext=mp4]/best",
                 "outtmpl": "downloads/%(id)s.%(ext)s",
@@ -358,19 +371,19 @@ class YouTubeAPI:
                 "nocheckcertificate": True,
                 "quiet": True,
                 "no_warnings": True,
+                "concurrent_fragment_downloads": 4,
+                "noprogress": True,
             }
             ydl_optssx.update(_extra_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
-            info = x.extract_info(link, False)
-            xyz = os.path.join(
-                "downloads", f"{info['id']}.{info['ext']}"
-            )
-            if os.path.exists(xyz):
-                return xyz
-            x.download([link])
-            return xyz
+            # Avval extract_info + keyin download() ikki marta ekstraksiya qilardi; endi bitta
+            info = x.extract_info(link, download=True)
+            return os.path.join("downloads", f"{info['id']}.{info['ext']}")
 
         def video_dl():
+            hit = _cached(link)
+            if hit and hit.endswith(".mp4"):
+                return hit
             ydl_optssx = {
                 "format": "(bestvideo[height<=?720][width<=?1280][ext=mp4])+(bestaudio[ext=m4a])",
                 "outtmpl": "downloads/%(id)s.%(ext)s",
@@ -378,17 +391,13 @@ class YouTubeAPI:
                 "nocheckcertificate": True,
                 "quiet": True,
                 "no_warnings": True,
+                "concurrent_fragment_downloads": 4,
+                "noprogress": True,
             }
             ydl_optssx.update(_extra_opts())
             x = yt_dlp.YoutubeDL(ydl_optssx)
-            info = x.extract_info(link, False)
-            xyz = os.path.join(
-                "downloads", f"{info['id']}.{info['ext']}"
-            )
-            if os.path.exists(xyz):
-                return xyz
-            x.download([link])
-            return xyz
+            info = x.extract_info(link, download=True)
+            return os.path.join("downloads", f"{info['id']}.{info['ext']}")
 
         def song_video_dl():
             formats = f"{format_id}+140"

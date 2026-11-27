@@ -28,6 +28,16 @@ selections = [
 ]
 
 
+def _controls(chat_id):
+    """Pleyer boshqaruv qatori: pauza, davom, keyingi, to'xtatish."""
+    return [
+        InlineKeyboardButton("⏸", callback_data=f"ADMIN Pause|{chat_id}"),
+        InlineKeyboardButton("▶️", callback_data=f"ADMIN Resume|{chat_id}"),
+        InlineKeyboardButton("⏭", callback_data=f"ADMIN Skip|{chat_id}"),
+        InlineKeyboardButton("⏹", callback_data=f"ADMIN Stop|{chat_id}"),
+    ]
+
+
 ## After Edits with Timer Bar
 
 
@@ -40,6 +50,7 @@ def stream_markup_timer(_, videoid, chat_id, played, dur):
                 callback_data="GetTimer",
             )
         ],
+        _controls(chat_id),
         [
             InlineKeyboardButton(
                 text=_["PL_B_2"],
@@ -68,6 +79,7 @@ def telegram_markup_timer(_, chat_id, played, dur):
                 callback_data="GetTimer",
             )
         ],
+        _controls(chat_id),
         [
             InlineKeyboardButton(
                 text=_["PL_B_3"],
@@ -86,6 +98,7 @@ def telegram_markup_timer(_, chat_id, played, dur):
 
 def stream_markup(_, videoid, chat_id):
     buttons = [
+        _controls(chat_id),
         [
             InlineKeyboardButton(
                 text=_["PL_B_2"],
@@ -107,6 +120,7 @@ def stream_markup(_, videoid, chat_id):
 
 def telegram_markup(_, chat_id):
     buttons = [
+        _controls(chat_id),
         [
             InlineKeyboardButton(
                 text=_["PL_B_3"],

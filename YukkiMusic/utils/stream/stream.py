@@ -27,7 +27,7 @@ from YukkiMusic.utils.inline.play import (stream_markup,
 from YukkiMusic.utils.inline.playlist import close_markup
 from YukkiMusic.utils.pastebin import Yukkibin
 from YukkiMusic.utils.stream.queue import put_queue, put_queue_index
-from YukkiMusic.utils.thumbnails import gen_thumb
+from YukkiMusic.utils.thumbnails import gen_thumb, prefetch_thumb
 
 
 async def stream(
@@ -92,6 +92,7 @@ async def stream(
                 if not forceplay:
                     db[chat_id] = []
                 status = True if video else None
+                prefetch_thumb(vidid)
                 try:
                     file_path, direct = await YouTube.download(
                         vidid, mystic, video=status, videoid=True
@@ -152,6 +153,7 @@ async def stream(
         title = (result["title"]).title()
         duration_min = result["duration_min"]
         status = True if video else None
+        prefetch_thumb(vidid)
         try:
             file_path, direct = await YouTube.download(
                 vidid, mystic, videoid=True, video=status
