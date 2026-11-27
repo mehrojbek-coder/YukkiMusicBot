@@ -13,7 +13,8 @@ import sys
 import os
 
 from pyrogram import Client
-from pyrogram.types import BotCommand
+from pyrogram.types import (BotCommand, BotCommandScopeAllGroupChats,
+                            BotCommandScopeAllPrivateChats)
 
 import config
 
@@ -69,25 +70,7 @@ class YukkiBot(Client):
                 "Send a message in the log group, then use /reload or restart "
                 "the service to pick it up."
             )
-        if config.SET_CMDS == str(True):
-            try:
-                await self.set_bot_commands(
-                    [
-                        BotCommand("ping", "Check that bot is alive or dead"),
-                        BotCommand("play", "Starts playing the requested song"),
-                        BotCommand("skip", "Moves to the next track in queue"),
-                        BotCommand("pause", "Pause the current playing song"),
-                        BotCommand("resume", "Resume the paused song"),
-                        BotCommand("end", "Clear the queue and leave voice chat"),
-                        BotCommand("shuffle", "Randomly shuffles the queued playlist."),
-                        BotCommand("playmode", "Allows you to change the default playmode for your chat"),
-                        BotCommand("settings", "Open the settings of the music bot for your chat.")
-                        ]
-                    )
-            except:
-                pass
-        else:
-            pass
+        await self._set_command_menu()
         if log_ok:
             try:
                 a = await self.get_chat_member(config.LOG_GROUP_ID, self.id)
@@ -102,3 +85,88 @@ class YukkiBot(Client):
         else:
             self.name = get_me.first_name
         LOGGER(__name__).info(f"MusicBot Started as {self.name}")
+
+
+    async def _set_command_menu(self):
+        """Shaxsiy chatda faqat u yerda ishlaydigan, guruhda esa guruhdagi buyruqlar."""
+        private = {
+            "ru": [
+                ("start", "Запустить бота"),
+                ("help", "Помощь и список команд"),
+                ("song", "Скачать трек или видео"),
+                ("playlist", "Мои плейлисты"),
+                ("deleteplaylist", "Удалить плейлист"),
+            ],
+            "uz": [
+                ("start", "Botni ishga tushirish"),
+                ("help", "Yordam va buyruqlar ro'yxati"),
+                ("song", "Trek yoki videoni yuklab olish"),
+                ("playlist", "Mening pleylistlarim"),
+                ("deleteplaylist", "Pleylistni o'chirish"),
+            ],
+        }
+        group = {
+            "ru": [
+                ("play", "Включить трек (название или ссылка)"),
+                ("vplay", "Включить видео"),
+                ("pause", "Пауза"),
+                ("resume", "Продолжить"),
+                ("skip", "Следующий трек"),
+                ("stop", "Остановить и выйти из чата"),
+                ("shuffle", "Перемешать очередь"),
+                ("loop", "Повтор трека"),
+                ("seek", "Перемотать вперёд"),
+                ("mute", "Выключить звук"),
+                ("unmute", "Включить звук"),
+                ("playlist", "Мои плейлисты"),
+                ("song", "Скачать трек или видео"),
+                ("lang", "Сменить язык"),
+                ("settings", "Настройки бота в группе"),
+                ("playmode", "Режим воспроизведения"),
+                ("auth", "Выдать доступ участнику"),
+                ("unauth", "Забрать доступ"),
+                ("authusers", "Список с доступом"),
+                ("stats", "Статистика"),
+                ("ping", "Проверить бота"),
+                ("help", "Помощь"),
+            ],
+            "uz": [
+                ("play", "Musiqa qo'yish (nom yoki havola)"),
+                ("vplay", "Video qo'yish"),
+                ("pause", "Pauza"),
+                ("resume", "Davom ettirish"),
+                ("skip", "Keyingi trek"),
+                ("stop", "To'xtatish va chatdan chiqish"),
+                ("shuffle", "Navbatni aralashtirish"),
+                ("loop", "Trekni takrorlash"),
+                ("seek", "Oldinga o'tkazish"),
+                ("mute", "Ovozni o'chirish"),
+                ("unmute", "Ovozni yoqish"),
+                ("playlist", "Mening pleylistlarim"),
+                ("song", "Trek yoki videoni yuklash"),
+                ("lang", "Tilni o'zgartirish"),
+                ("settings", "Guruh sozlamalari"),
+                ("playmode", "Ijro rejimi"),
+                ("auth", "Ishtirokchiga ruxsat berish"),
+                ("unauth", "Ruxsatni olib tashlash"),
+                ("authusers", "Ruxsat berilganlar ro'yxati"),
+                ("stats", "Statistika"),
+                ("ping", "Botni tekshirish"),
+                ("help", "Yordam"),
+            ],
+        }
+        for scope, table in (
+            (BotCommandScopeAllPrivateChats(), private),
+            (BotCommandScopeAllGroupChats(), group),
+        ):
+            for lang, items in table.items():
+                cmds = [BotCommand(c, d) for c, d in items]
+                try:
+                    # ru -- asosiy (barcha tillar uchun), uz -- o'zbek tili foydalanuvchilariga
+                    await self.set_bot_commands(
+                        cmds,
+                        scope=scope,
+                        language_code="" if lang == "ru" else lang,
+                    )
+                except Exception as e:
+                    LOGGER(__name__).warning(f"set_bot_commands failed: {e}")
