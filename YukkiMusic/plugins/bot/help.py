@@ -108,17 +108,17 @@ async def helper_cb(client, CallbackQuery, _):
         pass
     if cb == "hb1":
         await CallbackQuery.edit_message_text(
-            helpers.HELP_1, reply_markup=keyboard
+            helpers.get_help(_["lang_code"], 1), reply_markup=keyboard
         )
     elif cb == "hb2":
         await CallbackQuery.edit_message_text(
-            helpers.HELP_2, reply_markup=keyboard
+            helpers.get_help(_["lang_code"], 2), reply_markup=keyboard
         )
     elif cb == "hb3":
         await CallbackQuery.edit_message_text(
-            helpers.HELP_3, reply_markup=keyboard
+            helpers.get_help(_["lang_code"], 3), reply_markup=keyboard
         )
     elif cb == "hb4":
         await CallbackQuery.edit_message_text(
-            helpers.HELP_4, reply_markup=keyboard
+            helpers.get_help(_["lang_code"], 4), reply_markup=keyboard
         )

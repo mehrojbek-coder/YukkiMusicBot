@@ -476,3 +476,4 @@ sug_27 : "Bot has a feature called **Force Play**.\n\n**Force Play** stops the p
 lang_1 : "You are already using this language."
 lang_2 : "Language changed successfully."
 lang_3 : "Failed to change the language or it is being updated."
+lang_code : "en"
