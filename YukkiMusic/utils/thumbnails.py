@@ -226,9 +226,28 @@ async def _meta(videoid):
 _inflight = {}
 
 
+def _sweep_cache(keep=150):
+    """Disk to'lib ketmasligi uchun faqat eng yangi `keep` ta muqova saqlanadi."""
+    try:
+        files = [
+            os.path.join("cache", f)
+            for f in os.listdir("cache")
+            if f.endswith((".jpg", ".png"))
+        ]
+        if len(files) > keep:
+            files.sort(key=os.path.getmtime)
+            for f in files[: len(files) - keep]:
+                try:
+                    os.remove(f)
+                except OSError:
+                    pass
+    except Exception:
+        pass
+
+
 def prefetch_thumb(videoid):
     """Muqovani yuklash (download) bilan bir vaqtda orqa fonda tayyorlaydi."""
-    path = f"cache/{videoid}_v2.png"
+    path = f"cache/{videoid}_v3.jpg"
     if not os.path.isfile(path) and videoid not in _inflight:
         _inflight[videoid] = asyncio.ensure_future(_gen_thumb(videoid))
 
@@ -244,7 +263,7 @@ async def gen_thumb(videoid):
 
 
 async def _gen_thumb(videoid):
-    path = f"cache/{videoid}_v2.png"
+    path = f"cache/{videoid}_v3.jpg"
     if os.path.isfile(path):
         return path
     try:
@@ -260,7 +279,8 @@ async def _gen_thumb(videoid):
         card = await loop.run_in_executor(
             None, render_card, cover, title, artist, duration, MUSIC_BOT_NAME
         )
-        card.save(path, "PNG", optimize=False)
+        card.save(path, "JPEG", quality=90)
+        _sweep_cache()
         return path
     except Exception:
         return YOUTUBE_IMG_URL

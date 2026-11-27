@@ -361,7 +361,19 @@ class YouTubeAPI:
                         return f
             return None
 
+        def _sweep_downloads(max_age=12 * 3600):
+            # Eskirgan (12 soatdan oshgan) yuklangan fayllar o'chiriladi: disk to'lmaydi
+            try:
+                now = time.time()
+                for f in os.listdir("downloads"):
+                    fp = os.path.join("downloads", f)
+                    if os.path.isfile(fp) and now - os.path.getmtime(fp) > max_age:
+                        os.remove(fp)
+            except Exception:
+                pass
+
         def audio_dl():
+            _sweep_downloads()
             _t0 = time.time()
             hit = _cached(link)
             if hit:
