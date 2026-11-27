@@ -28,6 +28,12 @@ selections = [
 ]
 
 
+def _lang_btn(_, videoid):
+    return InlineKeyboardButton(
+        text=_["ST_B_6"], callback_data=f"PLANG {videoid}"
+    )
+
+
 def _controls(chat_id):
     """Pleyer boshqaruv qatori: pauza, davom, keyingi, to'xtatish."""
     return [
@@ -62,9 +68,10 @@ def stream_markup_timer(_, videoid, chat_id, played, dur):
             ),
         ],
         [
+            _lang_btn(_, videoid),
             InlineKeyboardButton(
                 text=_["CLOSEMENU_BUTTON"], callback_data="close"
-            )
+            ),
         ],
     ]
     return buttons
@@ -89,6 +96,7 @@ def telegram_markup_timer(_, chat_id, played, dur):
                 text=_["CLOSEMENU_BUTTON"], callback_data="close"
             ),
         ],
+        [_lang_btn(_, None)],
     ]
     return buttons
 
@@ -110,9 +118,10 @@ def stream_markup(_, videoid, chat_id):
             ),
         ],
         [
+            _lang_btn(_, videoid),
             InlineKeyboardButton(
                 text=_["CLOSEMENU_BUTTON"], callback_data="close"
-            )
+            ),
         ],
     ]
     return buttons
@@ -130,6 +139,7 @@ def telegram_markup(_, chat_id):
                 text=_["CLOSEMENU_BUTTON"], callback_data="close"
             ),
         ],
+        [_lang_btn(_, None)],
     ]
     return buttons
 

@@ -21,28 +21,39 @@ from YukkiMusic.utils.decorators import (ActualAdminCB, language,
 # Languages Available
 
 
-def lanuages_keyboard(_):
+def lanuages_keyboard(_, ctx=None, chat_id=None):
+    """ctx: musiqa posti ichidan ochilganda videoid ("None" = telegram/boshqa),
+    til tanlangandan keyin ham, "Orqaga" bosilganda ham post tugmalariga qaytadi."""
+    suffix = f":{ctx}" if ctx else ""
     keyboard = InlineKeyboard(row_width=3)
     keyboard.add(
         *[
             (
                 InlineKeyboardButton(
                     text=languages_present[i],
-                    callback_data=f"languages:{i}",
+                    callback_data=f"languages:{i}{suffix}",
                 )
             )
             for i in languages_present
         ]
     )
-    keyboard.row(
-        InlineKeyboardButton(
-            text=_["BACK_BUTTON"],
-            callback_data=f"settingsback_helper",
-        ),
-        InlineKeyboardButton(
-            text=_["CLOSE_BUTTON"], callback_data=f"close"
-        ),
-    )
+    if ctx:
+        keyboard.row(
+            InlineKeyboardButton(
+                text=_["BACK_BUTTON"],
+                callback_data=f"MainMarkup {ctx}|{chat_id}",
+            ),
+        )
+    else:
+        keyboard.row(
+            InlineKeyboardButton(
+                text=_["BACK_BUTTON"],
+                callback_data=f"settingsback_helper",
+            ),
+            InlineKeyboardButton(
+                text=_["CLOSE_BUTTON"], callback_data=f"close"
+            ),
+        )
     return keyboard
 
 
@@ -64,7 +75,7 @@ async def langs_command(client, message: Message, _):
     )
 
 
-@app.on_callback_query(filters.regex("LG") & ~BANNED_USERS)
+@app.on_callback_query(filters.regex(r"^LG$") & ~BANNED_USERS)
 @languageCB
 async def lanuagecb(client, CallbackQuery, _):
     try:
@@ -77,12 +88,28 @@ async def lanuagecb(client, CallbackQuery, _):
     )
 
 
+@app.on_callback_query(filters.regex(r"^PLANG ") & ~BANNED_USERS)
+@languageCB
+async def player_lang_cb(client, CallbackQuery, _):
+    try:
+        await CallbackQuery.answer()
+    except Exception:
+        pass
+    ctx = CallbackQuery.data.split(None, 1)[1].strip()
+    keyboard = lanuages_keyboard(_, ctx, CallbackQuery.message.chat.id)
+    return await CallbackQuery.edit_message_reply_markup(
+        reply_markup=keyboard
+    )
+
+
 @app.on_callback_query(
     filters.regex(r"languages:(.*?)") & ~BANNED_USERS
 )
 @ActualAdminCB
 async def language_markup(client, CallbackQuery, _):
-    langauge = (CallbackQuery.data).split(":")[1]
+    parts = (CallbackQuery.data).split(":")
+    langauge = parts[1]
+    ctx = parts[2] if len(parts) > 2 else None
     chat = CallbackQuery.message.chat
     old = await get_lang(chat.id)
     if str(old) == str(langauge):
@@ -94,7 +121,11 @@ async def language_markup(client, CallbackQuery, _):
     await set_lang(chat.id, langauge)
     await CallbackQuery.answer(new_["lang_2"], show_alert=True)
     # Menyu matni va tugmalari yangi tilda qayta chiziladi
-    keyboard = lanuages_keyboard(new_)
+    keyboard = lanuages_keyboard(new_, ctx, chat.id)
+    if ctx:  # musiqa posti ichida: faqat tugmalar yangilanadi
+        return await CallbackQuery.edit_message_reply_markup(
+            reply_markup=keyboard
+        )
     try:
         return await CallbackQuery.edit_message_text(
             new_["setting_1"].format(chat.title, chat.id),
