@@ -8,6 +8,7 @@
 # All rights reserved.
 
 import asyncio
+import time
 import os
 import re
 from typing import Union
@@ -361,8 +362,10 @@ class YouTubeAPI:
             return None
 
         def audio_dl():
+            _t0 = time.time()
             hit = _cached(link)
             if hit:
+                print(f"[speed] audio cache hit: {time.time() - _t0:.2f}s")
                 return hit
             ydl_optssx = {
                 "format": "bestaudio[ext=m4a]/bestaudio/best[ext=mp4]/best",
@@ -378,6 +381,7 @@ class YouTubeAPI:
             x = yt_dlp.YoutubeDL(ydl_optssx)
             # Avval extract_info + keyin download() ikki marta ekstraksiya qilardi; endi bitta
             info = x.extract_info(link, download=True)
+            print(f"[speed] audio extract+download: {time.time() - _t0:.1f}s")
             return os.path.join("downloads", f"{info['id']}.{info['ext']}")
 
         def video_dl():
