@@ -255,19 +255,52 @@ class YouTubeAPI:
             link = self.base + link
         if "&" in link:
             link = link.split("&")[0]
-        results = VideosSearch(link, limit=1)
-        search = await results.next()
-        result_list = search["result"]
-        if not result_list:
-            # YouTube qidiruvi hech narsa topmadi — oldin bu yerda UnboundLocalError
-            # chiqib, foydalanuvchiga umumiy "Failed to Process Query!" ko'rsatilardi.
-            raise ValueError(f"No YouTube results found for query: {link!r}")
+        title = duration_min = vidid = yturl = thumbnail = None
+        try:
+            results = VideosSearch(link, limit=1)
+            search = await results.next()
+            result_list = search["result"]
+        except Exception as e:
+            print(f"[search] VideosSearch failed ({type(e).__name__}: {e}); yt-dlp bilan urinaman")
+            result_list = []
         for result in result_list:
             title = result["title"]
             duration_min = result["duration"]
             vidid = result["id"]
             yturl = result["link"]
             thumbnail = result["thumbnails"][0]["url"].split("?")[0]
+        if not result_list:
+            # youtube-search-python ishlamasa (YouTube o'zgarsa tez-tez bo'ladi) yt-dlp qidiruviga o'tamiz
+            def _search():
+                opts = {
+                    "quiet": True,
+                    "no_warnings": True,
+                    "skip_download": True,
+                    "extract_flat": "in_playlist",
+                    "noplaylist": True,
+                }
+                opts.update(_extra_opts())
+                q = link if link.startswith("http") else f"ytsearch1:{link}"
+                with yt_dlp.YoutubeDL(opts) as ydl:
+                    info = ydl.extract_info(q, download=False)
+                if info and info.get("entries"):
+                    info = next((e for e in info["entries"] if e), None)
+                return info
+
+            loop = asyncio.get_running_loop()
+            info = await loop.run_in_executor(None, _search)
+            if not info or not info.get("id"):
+                raise ValueError(f"No YouTube results found for query: {link!r}")
+            sec = int(info.get("duration") or 0)
+            h, rem = divmod(sec, 3600)
+            m, sc = divmod(rem, 60)
+            duration_min = (
+                f"{h}:{m:02d}:{sc:02d}" if h else f"{m}:{sc:02d}"
+            ) if sec else None
+            title = info.get("title") or "Unknown"
+            vidid = info["id"]
+            yturl = f"https://www.youtube.com/watch?v={vidid}"
+            thumbnail = f"https://i.ytimg.com/vi/{vidid}/hqdefault.jpg"
         track_details = {
             "title": title,
             "link": yturl,
