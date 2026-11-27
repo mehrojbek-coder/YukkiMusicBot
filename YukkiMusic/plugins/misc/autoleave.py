@@ -8,6 +8,9 @@
 # All rights reserved.
 
 import asyncio
+
+from strings import get_string
+from YukkiMusic.utils.database import get_lang
 from datetime import datetime
 
 import config
@@ -77,10 +80,11 @@ async def auto_end():
                 except:
                     continue
                 try:
-                    await app.send_message(
-                        chat_id,
-                        "Bot has left voice chat due to inactivity to avoid overload on servers. No-one was listening to the bot on voice chat.",
-                    )
+                    try:
+                        _ = get_string(await get_lang(chat_id))
+                    except Exception:
+                        _ = get_string("ru")
+                    await app.send_message(chat_id, _["x_autoleave"])
                 except:
                     continue
 

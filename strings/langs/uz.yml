@@ -365,3 +365,220 @@ lang_1 : "Bu til allaqachon tanlangan."
 lang_2 : "Til muvaffaqiyatli o'zgartirildi."
 lang_3 : "Tilni o'zgartirib bo'lmadi yoki til yangilanmoqda."
 lang_code : "uz"
+
+# Qo'shimcha (avval kodga qattiq yozilgan) matnlar
+x_dl_cancel : "🚦 Yuklashni bekor qilish"
+x_dl_ok : "Yuklab olindi.. Fayl qayta ishlanmoqda"
+x_skip_by : "{0} o'tkazib yubordi"
+x_seek_exceed : "Surib bo'lmaydi: umumiy davomiylikdan oshib ketadi.\n\nIjro etildi **{0}** daq / **{1}** daq"
+x_changes_by : "O'zgartirdi: {0}"
+x_sudo_only : "Faqat Sudo foydalanuvchilar uchun"
+x_watch_yt : "🎥 YouTube'da ko'rish"
+x_fetch_stats : "🔎 Shaxsiy statistikangiz yuklanmoqda.!"
+x_fetch_info : "🔎 Ma'lumot yuklanmoqda!"
+x_lyrics_fail : "Qo'shiq matnini olib bo'lmadi."
+x_watch : "🎥 Ko'rish "
+x_close : "🔄 Yopish"
+x_private_bot : "**Yopiq musiqa bot**\n\nFaqat egasi ruxsat bergan chatlarda ishlaydi. Avval bot egasidan chatingizga ruxsat berishini so'rang."
+x_autoleave : "Bot faolsizlik sababli ovozli chatdan chiqdi, serverlarga yuk tushmasligi uchun. Hech kim tinglamayotgan edi."
+x_cplay_off : "Kanal rejimi o'chirildi"
+x_not_live : "Bu jonli efir emas"
+x_anon_admin : "Siz anonim adminsiz\n\nGuruh sozlamalariga kiring\n-> Administratorlar\n-> O'z ismingizni bosing\n-> «Anonim qolish» ni o'chiring."
+x_no_spotify : "Bot hozircha Spotify so'rovlarini ijro eta olmaydi. Egasidan Spotify'ni yoqishni so'rang."
+x_bot_issue : "Botda muammo bor. Egasiga xabar bering, u log guruhini tekshirsin"
+x_need_vc : "Ovozli chatni yoqing.. Bot havolalarni ovozli chatsiz ijro eta olmaydi.."
+x_autoend_on : "Avto-yakunlash yoqildi.\n\nAgar hech kim tinglamasa, bot 3 daqiqadan keyin ovozli chatdan o'zi chiqadi."
+x_autoend_off : "Avto-yakunlash o'chirildi."
+x_wrong : "Nimadir xato ketdi."
+x_maint_on : "Texnik xizmat rejimi allaqachon yoqilgan"
+x_maint_off : "Texnik xizmat rejimi allaqachon o'chirilgan"
+x_failed : "Xato"
+x_cfg_wait : "Kuting.. Sozlamalar yuklanmoqda"
+x_act_get : "Faol ovozli chatlar olinmoqda.. Kuting"
+x_act_get_v : "Faol video chatlar olinmoqda.. Kuting"
+x_act_none : "Faol ovozli chatlar yo'q"
+x_act_voice : "**Faol ovozli chatlar:-**\n\n{0}"
+x_act_video : "**Faol video qo'ng'iroqlar:-**\n\n{0}"
+x_restarting : "Kuting.. {0} chatingiz uchun qayta ishga tushirilmoqda.."
+x_restarted : "Qayta ishga tushirildi. Endi musiqa qo'yib ko'ring.."
+x_dl_unknown : "Joriy vazifani aniqlab bo'lmadi"
+x_dl_done : "Yuklash allaqachon tugagan."
+x_dl_done2 : "Yuklash allaqachon tugagan yoki bekor qilingan."
+x_reload_fail : "Adminlar keshini yangilab bo'lmadi. Bot chatda admin ekanini tekshiring."
+x_dl_cancelled : "Yuklash bekor qilindi"
+x_dl_cancelled_by : "Yuklashni {0} bekor qildi"
+x_dl_stop_fail : "Yuklashni to'xtatib bo'lmadi."
+x_downloading : "Yuklanmoqda"
+x_quality_audio : "{0} sifatli audio = {1}"
+x_speed_dl : "Yuklash tezligi tekshirilmoqda"
+x_speed_ul : "Yuborish tezligi tekshirilmoqda"
+x_speed_share : "Test natijalari yuborilmoqda"
+x_speed_run : "Tezlik testi ishga tushirildi"
+x_maint : "Bot texnik xizmatda. Biroz kuting..."
+x_howfix : "Buni qanday tuzatish? "
+x_not_allowed : "Buni yopishga ruxsatingiz yo'q."
+pn_pause : "⏸ Pauza"
+pn_resume : "▶️ Davom"
+pn_skip : "⏯ O'tkazish"
+pn_stop : "⏹ To'xtatish"
+pn_back : "🔙 Orqaga"
+pn_mute : "🔇 Ovozsiz"
+pn_unmute : "🔊 Ovozli"
+pn_shuffle : "🔀 Aralashtirish"
+pn_loop : "🔁 Takrorlash"
+pn_b10 : "⏮ 10 soniya"
+pn_f10 : "⏭ 10 soniya"
+pn_b30 : "⏮ 30 soniya"
+pn_f30 : "⏭ 30 soniya"
+
+black_1: '**Foydalanish:**
+
+  /blacklistchat [CHAT_ID]'
+black_2: Chat allaqachon qora ro‘yxatda.
+black_3: Chat qora ro‘yxatga qo‘shildi
+black_4: '**Foydalanish:**
+
+  /whitelistchat [CHAT_ID]'
+black_5: Chat allaqachon ruxsat etilgan.
+black_6: Chat qora ro‘yxatdan chiqarildi
+black_7: '**Qora ro‘yxatdagi chatlar:**
+
+
+  '
+black_8: Qora ro‘yxatda chat yo‘q
+block_1: '{0} allaqachon botdan bloklangan.'
+block_2: '**{0}** botning bloklangan ro‘yxatiga qo‘shildi. Endi u botdan hech qanday holatda foydalana olmaydi.
+
+
+  Bloklanganlar: /blockedusers'
+block_3: Foydalanuvchi bloklanmagan.
+block_4: Foydalanuvchi blokdan chiqarildi, endi botdan foydalana oladi.
+block_5: Bloklangan foydalanuvchilar yo‘q
+block_6: Bloklanganlar ro‘yxati olinmoqda... Kuting
+block_7: '**Bloklangan foydalanuvchilar:**
+
+
+  '
+broad_1: '**Xabar {0} ta chatga yuborildi, {1} tasida qadaldi.**'
+broad_2: Assistent orqali xabar yuborish boshlandi...
+broad_3: '**Assistent xabari:**
+
+
+  '
+broad_4: 'Assistent {0}: {1} ta chatga yuborildi
+
+  '
+broad_5: '**Foydalanish**:
+
+  /broadcast [XABAR] yoki [xabarga javob]'
+broad_6: Yuborish uchun matn kiriting.
+broad_7: '**Xabar {0} ta foydalanuvchiga yuborildi.**'
+gban_1: O‘zingni gban qilmoqchimisan?
+gban_10: Global banlangan foydalanuvchilar yo‘q.
+gban_11: Kuting... Banlanganlar ro‘yxati olinmoqda
+gban_2: O‘zimni bloklaymi? Ha-ha
+gban_3: Sudo foydalanuvchini bloklamoqchimisan?
+gban_4: '{0} allaqachon **gban**da.'
+gban_5: '**{0} uchun global ban boshlandi**
+
+
+  Taxminiy vaqt: {1}.'
+gban_6: '**Global ban bajarildi**
+
+
+  **{0}** **{1}** ta chatda banlandi.'
+gban_7: '{0} hali **gban**da emas.'
+gban_8: '**{0} global bandan chiqarilmoqda**
+
+
+  Taxminiy vaqt: {1}.'
+gban_9: '**Global ban olib tashlandi**
+
+
+  **{0}** **{1}** ta chatda unban qilindi.'
+heroku_1: Heroku API kaliti va ilova nomi to‘g‘ri kiritilganini tekshiring
+heroku_10: '{0} muvaffaqiyatli qo‘shildi'
+heroku_11: Faqat Heroku ilovalari uchun
+heroku_12: Heroku sarfi tekshirilmoqda. Kuting
+heroku_13: Yangilanishlar tekshirilmoqda...
+heroku_14: Git buyrug‘ida xatolik
+heroku_15: Noto‘g‘ri Git repozitoriy
+heroku_2: Loglar faqat Heroku ilovalari uchun mavjud
+heroku_3: '**Foydalanish:**
+
+  /get_var [o‘zgaruvchi nomi]'
+heroku_4: Bunday o‘zgaruvchi topilmadi.
+heroku_5: .env fayli topilmadi.
+heroku_6: '**Foydalanish:**
+
+  /del_var [o‘zgaruvchi nomi]'
+heroku_7: '{0} o‘chirildi.'
+heroku_8: '**Foydalanish:**
+
+  /set_var [nom] [qiymat]'
+heroku_9: '{0} muvaffaqiyatli yangilandi'
+log_1: '**Foydalanish:**
+
+  /logger [enable|disable]'
+log_2: Jurnal yuritish yoqildi
+log_3: Jurnal yuritish o‘chirildi
+maint_1: '**Foydalanish:**
+
+  /maintenance [enable|disable]'
+maint_2: Texnik xizmat rejimi yoqildi
+maint_3: Texnik xizmat rejimi o‘chirildi
+pbot_1: '**Foydalanish:**
+
+  /authorize [CHAT_ID]'
+pbot_10: Shaxsiy chat
+pbot_11: Ruxsat etilgan chatlar topilmadi
+pbot_12: 'Shaxsiy bot rejimi o‘chirilgan.
+
+
+  Yoqish uchun **PRIVATE_BOT_MODE** = **True** qiling'
+pbot_13: '
+
+  **<b>Topilmagan chatlar:</b>**
+
+
+  '
+pbot_2: '**Foydalanish:**
+
+  /unauthorize [CHAT_ID]'
+pbot_3: Chat ruxsat etilganlar ro‘yxatiga qo‘shildi
+pbot_4: Chat ruxsat etilganlar ro‘yxatidan o‘chirildi
+pbot_5: Chat allaqachon ruxsat etilganlar ro‘yxatida
+pbot_6: Bunday chat ruxsat etilganlar ro‘yxatida yo‘q
+pbot_7: 'chat_id tekshirilmadi.
+
+
+  U raqam ko‘rinishida va to‘g‘ri formatda ekanini tekshiring. Username yoki havola ishlatmang.'
+pbot_8: Kuting... Ruxsat etilgan chatlar olinmoqda.
+pbot_9: '**<b>Topilgan chatlar:</b>**
+
+
+  '
+sudo_1: '{0} allaqachon sudo foydalanuvchi.'
+sudo_2: '**{0}** sudo foydalanuvchilarga qo‘shildi.'
+sudo_3: Bot sudo ro‘yxatida emas.
+sudo_4: Bot sudo ro‘yxatidan o‘chirildi
+sudo_5: '⭐️<u> **Egalar:**</u>
+
+  '
+sudo_6: '
+
+  ⭐️<u> **Sudo foydalanuvchilar:**</u>
+
+  '
+sudo_7: Sudo foydalanuvchilar yo‘q
+vid_1: '**Foydalanish:**
+
+  /set_video_limit [chatlar soni] yoki [Disable]'
+vid_2: Limit uchun raqam kiriting.
+vid_3: 'Video qo‘ng‘iroqlar maksimumi: {0} ta chat.'
+vid_4: Video qo‘ng‘iroqlar o‘chirildi
+vidmode_1: '**Foydalanish:**
+
+  /videomode [download|m3u8]'
+vidmode_2: 'Video rejimi: yuklab olish. Bot treklarni yuklab oladi.'
+vidmode_3: 'Video rejimi: m3u8. Bot treklarni jonli ijro etadi.'

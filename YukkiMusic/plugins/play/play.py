@@ -18,7 +18,8 @@ from pytgcalls.exceptions import NoActiveGroupCall
 
 import config
 from config import BANNED_USERS, lyrical
-from strings import get_command
+from strings import get_command, get_string
+from YukkiMusic.utils.database import get_lang
 from YukkiMusic import (Apple, Resso, SoundCloud, Spotify, Telegram,
                         YouTube, app)
 from YukkiMusic.core.call import Yukki
@@ -217,7 +218,7 @@ async def play_commnd(
                 and not config.SPOTIFY_CLIENT_SECRET
             ):
                 return await mystic.edit_text(
-                    "This bot isn't able to play spotify queries. Please ask my owner to enable spotify."
+                    _["x_no_spotify"]
                 )
             if "track" in url:
                 try:
@@ -338,11 +339,11 @@ async def play_commnd(
                 await Yukki.stream_call(url)
             except NoActiveGroupCall:
                 await mystic.edit_text(
-                    "There's an issue with the bot. Please report it to my owner and ask them to check logger group."
+                    _["x_bot_issue"]
                 )
                 return await app.send_message(
                     config.LOG_GROUP_ID,
-                    "Please turn on Voice Chat.. Bot is not able to stream urls..",
+                    _["x_need_vc"],
                 )
             except Exception as e:
                 return await mystic.edit_text(
@@ -593,10 +594,11 @@ async def play_music(client, CallbackQuery, _):
 )
 async def anonymous_check(client, CallbackQuery):
     try:
-        await CallbackQuery.answer(
-            "You're an Anonymous Admin\n\nGo to your group's setting \n-> Administrators List \n-> Click on your name \n-> uncheck REMAIN ANONYMOUS button there.",
-            show_alert=True,
-        )
+        try:
+            _ = get_string(await get_lang(CallbackQuery.message.chat.id))
+        except Exception:
+            _ = get_string("ru")
+        await CallbackQuery.answer(_["x_anon_admin"], show_alert=True)
     except:
         return
 

@@ -13,6 +13,7 @@ from pyrogram.types import (InlineKeyboardButton,
 from youtubesearchpython.__future__ import VideosSearch
 
 from config import BANNED_USERS, MUSIC_BOT_NAME
+from strings import get_string
 from YukkiMusic import app
 from YukkiMusic.utils.inlinequery import answer
 
@@ -21,6 +22,8 @@ from YukkiMusic.utils.inlinequery import answer
 async def inline_query_handler(client, query):
     text = query.query.strip().lower()
     answers = []
+    _lc = (getattr(query.from_user, "language_code", "") or "")[:2]
+    _ = get_string(_lc if _lc in ("ru", "uz") else "en")
     if text.strip() == "":
         try:
             await client.answer_inline_query(
@@ -47,7 +50,7 @@ async def inline_query_handler(client, query):
                 [
                     [
                         InlineKeyboardButton(
-                            text="🎥 Watch on Youtube",
+                            text=_["x_watch_yt"],
                             url=link,
                         )
                     ],

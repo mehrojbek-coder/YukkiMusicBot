@@ -50,7 +50,7 @@ async def reload_admin_cache(client, message: Message, _):
         await message.reply_text(_["admin_20"])
     except:
         await message.reply_text(
-            "Failed to reload admincache. Make sure Bot is admin in your chat."
+            _["x_reload_fail"]
         )
 
 
@@ -63,7 +63,7 @@ async def reload_admin_cache(client, message: Message, _):
 @AdminActual
 async def restartbot(client, message: Message, _):
     mystic = await message.reply_text(
-        f"Please Wait.. Restarting {MUSIC_BOT_NAME} for your chat.."
+        _["x_restarting"].format(MUSIC_BOT_NAME)
     )
     await asyncio.sleep(1)
     try:
@@ -83,7 +83,7 @@ async def restartbot(client, message: Message, _):
         except:
             pass
     return await mystic.edit_text(
-        "Successfully restarted. Try playing now.."
+        _["x_restarted"]
     )
 
 
@@ -114,11 +114,11 @@ async def stop_download(client, CallbackQuery: CallbackQuery, _):
     task = lyrical.get(message_id)
     if not task:
         return await CallbackQuery.answer(
-            "Downloading already Completed.", show_alert=True
+            _["x_dl_done"], show_alert=True
         )
     if task.done() or task.cancelled():
         return await CallbackQuery.answer(
-            "Downloading already Completed or Cancelled.",
+            _["x_dl_done2"],
             show_alert=True,
         )
     if not task.done():
@@ -129,15 +129,15 @@ async def stop_download(client, CallbackQuery: CallbackQuery, _):
             except:
                 pass
             await CallbackQuery.answer(
-                "Downloading Cancelled", show_alert=True
+                _["x_dl_cancelled"], show_alert=True
             )
             return await CallbackQuery.edit_message_text(
-                f"Download Cancelled by {CallbackQuery.from_user.mention}"
+                _["x_dl_cancelled_by"].format(CallbackQuery.from_user.mention)
             )
         except:
             return await CallbackQuery.answer(
-                "Failed to stop the Downloading.", show_alert=True
+                _["x_dl_stop_fail"], show_alert=True
             )
     await CallbackQuery.answer(
-        "Failed to recognize the running task", show_alert=True
+        _["x_dl_unknown"], show_alert=True
     )

@@ -7,6 +7,7 @@
 #
 # All rights reserved.
 
+from YukkiMusic.utils.langtool import L
 from pyrogram import filters
 
 import config
@@ -22,6 +23,7 @@ AUTOEND_COMMAND = get_command("AUTOEND_COMMAND")
 
 @app.on_message(filters.command(AUTOEND_COMMAND) & SUDOERS)
 async def auto_end_stream(client, message):
+    _ = await L(message.chat.id)
     usage = "**Usage:**\n\n/autoend [enable|disable]"
     if len(message.command) != 2:
         return await message.reply_text(usage)
@@ -30,10 +32,10 @@ async def auto_end_stream(client, message):
     if state == "enable":
         await autoend_on()
         await message.reply_text(
-            "Auto End Stream Enabled.\n\nBot will leave voice chat automatically after 3 mins if no one is listening with a warning message.."
+            _["x_autoend_on"]
         )
     elif state == "disable":
         await autoend_off()
-        await message.reply_text("Auto End Stream Disabled.")
+        await message.reply_text(_["x_autoend_off"])
     else:
         await message.reply_text(usage)

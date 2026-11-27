@@ -314,7 +314,7 @@ async def overall_stats(client, CallbackQuery, _):
 async def overall_stats(client, CallbackQuery, _):
     if CallbackQuery.from_user.id not in SUDOERS:
         return await CallbackQuery.answer(
-            "Only for Sudo Users", show_alert=True
+            _["x_sudo_only"], show_alert=True
         )
     callback_data = CallbackQuery.data.strip()
     what = callback_data.split(None, 1)[1]

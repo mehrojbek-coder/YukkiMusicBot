@@ -9,6 +9,7 @@
 
 import asyncio
 import speedtest
+from YukkiMusic.utils.langtool import L
 from pyrogram import filters
 from strings import get_command
 from YukkiMusic import app
@@ -36,7 +37,8 @@ def testspeed(m):
 
 @app.on_message(filters.command(SPEEDTEST_COMMAND) & SUDOERS)
 async def speedtest_function(client, message):
-    m = await message.reply_text("Running Speed test")
+    _ = await L(message.chat.id)
+    m = await message.reply_text(_["x_speed_run"])
     loop = asyncio.get_event_loop()
     result = await loop.run_in_executor(None, testspeed, m)
     output = f"""**Speedtest Results**

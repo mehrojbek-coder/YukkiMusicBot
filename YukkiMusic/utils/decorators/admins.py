@@ -7,6 +7,7 @@
 #
 # All rights reserved.
 
+from YukkiMusic.utils.langtool import L
 from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from config import adminlist
@@ -27,7 +28,7 @@ def AdminRightsCheck(mystic):
         if await is_maintenance() is False:
             if message.from_user.id not in SUDOERS:
                 return await message.reply_text(
-                    "Bot is under maintenance. Please wait for some time..."
+                    (await L(message.chat.id))["x_maint"]
                 )
         if await is_commanddelete_on(message.chat.id):
             try:
@@ -44,7 +45,7 @@ def AdminRightsCheck(mystic):
                 [
                     [
                         InlineKeyboardButton(
-                            text="How to Fix this? ",
+                            text=_["x_howfix"],
                             callback_data="AnonymousAdmin",
                         ),
                     ]
@@ -84,7 +85,7 @@ def AdminActual(mystic):
         if await is_maintenance() is False:
             if message.from_user.id not in SUDOERS:
                 return await message.reply_text(
-                    "Bot is under maintenance. Please wait for some time..."
+                    (await L(message.chat.id))["x_maint"]
                 )
         if await is_commanddelete_on(message.chat.id):
             try:
@@ -101,7 +102,7 @@ def AdminActual(mystic):
                 [
                     [
                         InlineKeyboardButton(
-                            text="How to Fix this? ",
+                            text=_["x_howfix"],
                             callback_data="AnonymousAdmin",
                         ),
                     ]
@@ -129,7 +130,7 @@ def ActualAdminCB(mystic):
         if await is_maintenance() is False:
             if CallbackQuery.from_user.id not in SUDOERS:
                 return await CallbackQuery.answer(
-                    "Bot is under maintenance. Please wait for some time...",
+                    (await L(CallbackQuery.message.chat.id))["x_maint"],
                     show_alert=True,
                 )
         try:

@@ -128,7 +128,7 @@ class TeleAPI:
                     [
                         [
                             InlineKeyboardButton(
-                                text="🚦 Cancel Downloading",
+                                text=_["x_dl_cancel"],
                                 callback_data="stop_downloading",
                             ),
                         ]
@@ -173,7 +173,7 @@ class TeleAPI:
                     progress=progress,
                 )
                 await mystic.edit_text(
-                    "Successfully Downloaded.. Processing file now"
+                    _["x_dl_ok"]
                 )
                 downloader.pop(message.message_id)
             except:

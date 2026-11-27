@@ -55,7 +55,7 @@ async def start_comm(client, message: Message, _):
             return await message.reply_text(_["song_2"])
         if name[0:3] == "sta":
             m = await message.reply_text(
-                "🔎 Fetching your personal stats.!"
+                _["x_fetch_stats"]
             )
             stats = await get_userss(message.from_user.id)
             tot = len(stats)
@@ -126,12 +126,12 @@ async def start_comm(client, message: Message, _):
                 return await Telegram.send_split_text(message, lyrics)
             else:
                 return await message.reply_text(
-                    "Failed to get lyrics."
+                    _["x_lyrics_fail"]
                 )
         if name[0:3] == "del":
             await del_plist_msg(client=client, message=message, _=_)
         if name[0:3] == "inf":
-            m = await message.reply_text("🔎 Fetching Info!")
+            m = await message.reply_text(_["x_fetch_info"])
             query = (str(name)).replace("info_", "", 1)
             query = f"https://www.youtube.com/watch?v={query}"
             results = VideosSearch(query, limit=1)
@@ -163,10 +163,10 @@ async def start_comm(client, message: Message, _):
                 [
                     [
                         InlineKeyboardButton(
-                            text="🎥 Watch ", url=f"{link}"
+                            text=_["x_watch"], url=f"{link}"
                         ),
                         InlineKeyboardButton(
-                            text="🔄 Close", callback_data="close"
+                            text=_["x_close"], callback_data="close"
                         ),
                     ],
                 ]
@@ -244,10 +244,14 @@ welcome_group = 2
 @app.on_message(filters.new_chat_members, group=welcome_group)
 async def welcome(client, message: Message):
     chat_id = message.chat.id
+    try:
+        _ = get_string(await get_lang(chat_id))
+    except Exception:
+        _ = get_string("ru")
     if config.PRIVATE_BOT_MODE == str(True):
         if not await is_served_private_chat(message.chat.id):
             await message.reply_text(
-                "**Private Music Bot**\n\nOnly for authorized chats from the owner. Ask my owner to allow your chat first."
+                _["x_private_bot"]
             )
             return await app.leave_chat(message.chat.id)
     else:
