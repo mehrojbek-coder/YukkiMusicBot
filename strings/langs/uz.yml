@@ -359,3 +359,8 @@ sug_24 : "Bot egasi va sudo foydalanuvchilarini ko'rish mumkin.\n\nBuyruq: /sudo
 sug_25 : "Botda **buyruqlarni o'chirish rejimi** bor. U bajarilgan buyruqlarni avtomatik o'chiradi.\n\nYoqish yoki o'chirish: /settings [__standart bo'yicha yoqilgan__]"
 sug_26 : "Bot tilini qulay tilga o'zgartirish mumkin.\n\nBuyruq: /language"
 sug_27 : "Botda **Force Play** bor.\n\n**Force Play** joriy trekni to'xtatib, topilganini darhol boshlaydi, navbatga tegmaydi.\n\nBuyruq: /playforce"
+
+# Language
+lang_1 : "Bu til allaqachon tanlangan."
+lang_2 : "Til muvaffaqiyatli o'zgartirildi."
+lang_3 : "Tilni o'zgartirib bo'lmadi yoki til yangilanmoqda."

@@ -83,23 +83,24 @@ async def lanuagecb(client, CallbackQuery, _):
 @ActualAdminCB
 async def language_markup(client, CallbackQuery, _):
     langauge = (CallbackQuery.data).split(":")[1]
-    old = await get_lang(CallbackQuery.message.chat.id)
+    chat = CallbackQuery.message.chat
+    old = await get_lang(chat.id)
     if str(old) == str(langauge):
-        return await CallbackQuery.answer(
-            "You're already on same language", show_alert=True
-        )
+        return await CallbackQuery.answer(_["lang_1"], show_alert=True)
     try:
-        _ = get_string(langauge)
-        await CallbackQuery.answer(
-            "Successfully changed your language.", show_alert=True
+        new_ = get_string(langauge)
+    except Exception:
+        return await CallbackQuery.answer(_["lang_3"], show_alert=True)
+    await set_lang(chat.id, langauge)
+    await CallbackQuery.answer(new_["lang_2"], show_alert=True)
+    # Menyu matni va tugmalari yangi tilda qayta chiziladi
+    keyboard = lanuages_keyboard(new_)
+    try:
+        return await CallbackQuery.edit_message_text(
+            new_["setting_1"].format(chat.title, chat.id),
+            reply_markup=keyboard,
         )
-    except:
-        return await CallbackQuery.answer(
-            "Failed to change language or Language under update.",
-            show_alert=True,
+    except Exception:
+        return await CallbackQuery.edit_message_reply_markup(
+            reply_markup=keyboard
         )
-    await set_lang(CallbackQuery.message.chat.id, langauge)
-    keyboard = lanuages_keyboard(_)
-    return await CallbackQuery.edit_message_reply_markup(
-        reply_markup=keyboard
-    )

@@ -8,6 +8,7 @@
 # All rights reserved.
 
 import os
+import re
 import sys
 from typing import List
 
@@ -52,6 +53,14 @@ for filename in os.listdir(r"./strings/langs/"):
         for item in languages["en"]:
             if item not in languages[language_name]:
                 languages[language_name][item] = languages["en"][item]
+            else:
+                # Tarjimada {0} kabi o'rinbosarlar inglizchadan farq qilsa, bot
+                # xabar yuborishda xatoga tushmasligi uchun inglizcha matn olinadi
+                a, b = languages["en"][item], languages[language_name][item]
+                if isinstance(a, str) and isinstance(b, str):
+                    ph = lambda x: sorted(re.findall(r"\{\d*\}", x))
+                    if ph(a) != ph(b):
+                        languages[language_name][item] = a
     try:
         languages_present[language_name] = languages[language_name][
             "name"
@@ -61,3 +70,12 @@ for filename in os.listdir(r"./strings/langs/"):
             "There is some issue with the language file inside bot. Please report it to the TeamYukki at @YukkiSupport on Telegram"
         )
         sys.exit()
+
+
+# Til tanlash menyusida tartib: avval ruscha, o'zbekcha, inglizcha, keyin qolganlari
+_order = ["ru", "uz", "en"]
+languages_present = {
+    k: languages_present[k]
+    for k in _order + sorted(k for k in languages_present if k not in _order)
+    if k in languages_present
+}
