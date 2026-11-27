@@ -7,108 +7,108 @@
 #
 # All rights reserved.
 
-HELP_1 = """✅**<u>Admin Commands:</u>**
+HELP_1 = """✅**<u>Команды админов:</u>**
 
-**c** stands for channel play.
+**c** означает режим канала.
 
-/pause or /cpause - Pause the playing music.
-/resume or /cresume- Resume the paused music.
-/mute or /cmute- Mute the playing music.
-/unmute or /cunmute- Unmute the muted music.
-/skip or /cskip- Skip the current playing music.
-/stop or /cstop- Stop the playing music.
-/shuffle or /cshuffle- Randomly shuffles the queued playlist.
-/seek or /cseek - Forward Seek the music to your duration
-/seekback or /cseekback - Backward Seek the music to your duration
-/restart - Restart bot for your chat .
-
-
-✅<u>**Specific Skip:**</u>
-/skip or /cskip [Number(example: 3)] 
-    - Skips music to a the specified queued number. Example: /skip 3 will skip music to third queued music and will ignore 1 and 2 music in queue.
-
-✅<u>**Loop Play:**</u>
-/loop or /cloop [enable/disable] or [Numbers between 1-10] 
-    - When activated, bot loops the current playing music to 1-10 times on voice chat. Default to 10 times.
-
-✅<u>**Auth Users:**</u>
-Auth Users can use admin commands without admin rights in your chat.
-
-/auth [Username] - Add a user to AUTH LIST of the group.
-/unauth [Username] - Remove a user from AUTH LIST of the group.
-/authusers - Check AUTH LIST of the group."""
+/pause или /cpause - Поставить музыку на паузу.
+/resume или /cresume - Продолжить музыку.
+/mute или /cmute - Выключить звук.
+/unmute или /cunmute - Включить звук.
+/skip или /cskip - Пропустить текущий трек.
+/stop или /cstop - Остановить музыку.
+/shuffle или /cshuffle - Перемешать очередь.
+/seek или /cseek - Перемотать вперёд на указанное время
+/seekback или /cseekback - Перемотать назад на указанное время
+/restart - Перезапустить бота для вашего чата.
 
 
-HELP_2 = """✅<u>**Play Commands:**</u>
+✅<u>**Переход к треку:**</u>
+/skip или /cskip [номер (пример: 3)]
+    - Переходит к указанному номеру в очереди. Пример: /skip 3 перейдёт к третьему треку, пропустив 1 и 2.
 
-Available Commands = play , vplay , cplay
+✅<u>**Повтор:**</u>
+/loop или /cloop [enable/disable] или [число от 1 до 10]
+    - Повторяет текущий трек 1-10 раз. По умолчанию 10.
 
-ForcePlay Commands = playforce , vplayforce , cplayforce
+✅<u>**Авторизованные:**</u>
+Авторизованные пользователи могут использовать админ-команды без прав администратора.
 
-**c** stands for channel play.
-**v** stands for video play.
-**force** stands for force play.
-
-/play or /vplay or /cplay  - Bot will start playing your given query on voice chat or Stream live links on voice chats.
-
-/playforce or /vplayforce or /cplayforce -  **Force Play** stops the current playing track on voice chat and starts playing the searched track instantly without disturbing/clearing queue.
-
-/channelplay [Chat username or id] or [Disable] - Connect channel to a group and stream music on channel's voice chat from your group.
-
-
-✅**<u>Bot's Server Playlists:</u>**
-/playlist  - Check Your Saved Playlist On Servers.
-/deleteplaylist - Delete any saved music in your playlist
-/play  - Start playing Your Saved Playlist from Servers."""
+/auth [username] - Добавить пользователя в список авторизованных.
+/unauth [username] - Убрать пользователя из списка.
+/authusers - Показать список авторизованных."""
 
 
-HELP_3 = """✅<u>**Bot Commands:**</u>
+HELP_2 = """✅<u>**Команды плеера:</u>**
 
-/stats - Get Top 10 Tracks Global Stats, Top 10 Users of bot, Top 10 Chats on bot, Top 10 Played in a chat etc etc.
+Доступно: play , vplay , cplay
 
-/sudolist - Check Sudo Users of Yukki Music Bot
+Принудительно: playforce , vplayforce , cplayforce
 
-/lyrics [Music Name] - Searches Lyrics for the particular Music on web.
+**c** означает режим канала.
+**v** означает видео.
+**force** означает принудительное воспроизведение.
 
-/song [Track Name] or [YT Link] - Download any track from youtube in mp3 or mp4 formats.
+/play или /vplay или /cplay - Бот начнёт играть ваш запрос в голосовом чате или включит прямую трансляцию по ссылке.
 
-/player -  Get a interactive Playing Panel.
+/playforce или /vplayforce или /cplayforce - **Force Play** останавливает текущий трек и сразу включает найденный, не трогая очередь.
 
-**c** stands for channel play.
+/channelplay [username или id чата] или [Disable] - Подключить канал к группе и играть музыку в голосовом чате канала.
 
-/queue or /cqueue- Check Queue List of Music."""
 
-HELP_4 = """✅<u>**Extra  Commands:**</u>
-/start - Start the Music Bot.
-/help  - Get Commands Helper Menu with detailed explanations of commands.
-/ping- Ping the Bot and check Ram, Cpu etc stats of Bot.
+✅**<u>Плейлисты на сервере бота:</u>**
+/playlist  - Ваш сохранённый плейлист.
+/deleteplaylist - Удалить трек из плейлиста
+/play  - Играть сохранённый плейлист."""
 
-✅<u>**Group Settings:**</u>
-/settings - Get a complete group's settings with inline buttons
 
-🔗 **Options in Settings:**
+HELP_3 = """✅<u>**Команды бота:</u>**
 
-1️⃣ You can set **Audio Quality** you want to stream on voice chat.
+/stats - Глобальный топ 10 треков, пользователей и чатов бота, топ 10 в чате и т.д.
 
-2️⃣ You can set **Video Quality** you want to stream on voice chat.
+/sudolist - Владелец и sudo-пользователи Melodiya Music
 
-3️⃣ **Auth Users**:- You can change admin commands mode from here to everyone or admins only. If everyone, anyone present in you group will be able to use admin commands(like /skip, /stop etc)
+/lyrics [название] - Найти текст песни в интернете.
 
-4️⃣ **Clean Mode:** When enabled deletes the bot's messages after 5 mins from your group to make sure your chat remains clean and good.
+/song [название трека] или [ссылка YT] - Скачать трек с YouTube в mp3 или mp4.
 
-5️⃣ **Command Clean** : When activated, Bot will delete its executed commands (/play, /pause, /shuffle, /stop etc) immediately.
+/player - Интерактивная панель воспроизведения.
 
-6️⃣ **Play Settings:**
+**c** означает режим канала.
 
-/playmode - Get a complete play settings panel with buttons where you can set your group's play settings. 
+/queue или /cqueue - Очередь музыки."""
 
-<u>Options in playmode:</u>
+HELP_4 = """✅<u>**Дополнительные команды:</u>**
+/start - Запустить бота.
+/help  - Меню команд с подробными объяснениями.
+/ping - Пинг бота, нагрузка на ОЗУ и процессор.
 
-1️⃣ **Search Mode** [Direct or Inline] - Changes your search mode while you give /play mode. 
+✅<u>**Настройки группы:</u>**
+/settings - Все настройки группы кнопками
 
-2️⃣ **Admin Commands** [Everyone or Admins] - If everyone, anyone present in you group will be able to use admin commands(like /skip, /stop etc)
+🔗 **Что есть в настройках:**
 
-3️⃣ **Play Type** [Everyone or Admins] - If admins, only admins present in group can play music on voice chat."""
+1️⃣ **Качество аудио** голосового чата.
+
+2️⃣ **Качество видео** голосового чата.
+
+3️⃣ **Авторизованные**:- Здесь можно разрешить админ-команды всем или только админам. Если «все», любой участник группы сможет использовать админ-команды (/skip, /stop и т.д.)
+
+4️⃣ **Чистый режим:** Бот удаляет свои сообщения через 5 минут, чат остаётся чистым.
+
+5️⃣ **Очистка команд** : Бот сразу удаляет выполненные команды (/play, /pause, /shuffle, /stop и т.д.).
+
+6️⃣ **Настройки воспроизведения:**
+
+/playmode - Панель настроек воспроизведения группы.
+
+<u>Что есть в playmode:</u>
+
+1️⃣ **Режим поиска** [Direct или Inline] - как бот ищет по команде /play.
+
+2️⃣ **Админ-команды** [все или админы] - Если «все», любой участник группы сможет использовать админ-команды (/skip, /stop и т.д.)
+
+3️⃣ **Кто запускает** [все или админы] - Если «админы», музыку в голосовом чате запускают только администраторы."""
 
 HELP_5 = """🔰**<u>ADD & REMOVE SUDO USERS :</u>**
 /addsudo [Username or Reply to a user]

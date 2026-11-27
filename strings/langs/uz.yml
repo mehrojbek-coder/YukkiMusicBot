@@ -1,0 +1,361 @@
+name : 🇺🇿 O'zbekcha
+
+# General Strings
+general_1 : "Foydalanuvchi xabariga javob bering yoki username/user_id yozing."
+general_2 : "Xato! Buyruq noto'g'ri ishlatildi."
+general_3 : "So'rovni bajarishda **xatolik yuz berdi**.\n\nXato turi:- {0}"
+general_4 : "Siz bu guruhda anonim adminsiz!\nAdmin huquqlaridan oddiy akkauntga qayting."
+general_5 : "Ovozli chatni boshqarish huquqiga ega admin bo'lishingiz kerak."
+general_6 : "Bot hozir ovozli chatda hech narsa ijro etmayapti."
+
+# Classes - Telegram.py
+tg_1 : "Bot hozir yuklamalar bilan **band**.\n\n**Qayta urinib ko'ring:** {0} (__taxminiy vaqt__)"
+tg_2 : "Telegram'dan faylni yuklab bo'lmadi."
+
+# Core - Call.py
+call_1 : "Yordamchini kanalga taklif qilish uchun botga **Admin** huquqi kerak."
+call_2 : "Yordamchi guruh yoki kanalda bloklangan, blokdan chiqaring.\n\n**Yordamchi username:** @{0}\n**Yordamchi ID:** {1}"
+call_3 : "Yordamchini chatga taklif qilishda xatolik.\n\n**Sabab**: {0}"
+call_4 : "Yordamchini guruhga qo'shish uchun botga **Havola orqali taklif qilish** huquqi kerak."
+call_5 : "Yordamchi 5 soniyadan keyin qo'shiladi.. Kuting!"
+call_6 : "Yordamchi[{0}] muvaffaqiyatli qo'shildi.\n\nMusiqa boshlanmoqda"
+call_7 : "**Xavfli huquq berilgan**\n\nBotdan **FOYDALANUVCHILARNI BLOKLASH** huquqini oling."
+call_8 : "**Xavfli huquq berilgan**\n\nBotdan **ADMIN QO'SHISH** huquqini oling."
+call_9 : "**Oqimni almashtirib bo'lmadi**\n/skip yordamida trekni qayta almashtiring."
+call_10 : "Pleylistdagi keyingi trek yuklanmoqda"
+call_11 : "@{0} ni kanalingizga qo'shing[ ID: {1}].\n\nBot kanal ma'lumotini ololmayapti."
+
+# PLUGINS - Auth.py
+auth_1 : "Guruhning ruxsat berilganlar ro'yxatida 20 tadan ortiq foydalanuvchi bo'lmaydi"
+auth_2 : "Guruhning ruxsat berilganlar ro'yxatiga qo'shildi."
+auth_3 : "Allaqachon ruxsat berilganlar ro'yxatida."
+auth_4 : "Guruhning ruxsat berilganlar ro'yxatidan olib tashlandi."
+auth_5 : "Bu foydalanuvchi ruxsat berilganlar ro'yxatida emas."
+auth_6 : "Ruxsat berilganlar yuklanmoqda... Kuting"
+auth_7 : "**Ruxsat berilgan foydalanuvchilar:**\n\n"
+auth_8 : "┗ Qo'shgan:-"
+
+# PLUGINS - Admins
+admin_1 : "Musiqa allaqachon pauzada."
+admin_2 : "🎧 Ovozli chatni {} pauzaga qo'ydi!"
+admin_3 : "Musiqa allaqachon davom etyapti."
+admin_4 : "🎧 Ovozli chatni {} davom ettirdi!"
+admin_5 : "Ovoz allaqachon o'chirilgan."
+admin_6 : "🎧 Ovozni {} o'chirdi!"
+admin_7 : "Ovoz allaqachon yoqilgan."
+admin_8 : "🎧 Ovozni {} yoqdi!"
+admin_9 : "🎧 Ijroni {} to'xtatdi!"
+admin_10 : "🎧 Trekni {} o'tkazib yubordi!. Navbatda musiqa qolmadi."
+admin_11 : "**{0}** ga o'tishda xatolik\n\nYana /skip yozing."
+admin_12 : "Takrorlash yoqilganda aniq trekka o'tib bo'lmaydi. `/loop disable` bilan o'chiring."
+admin_13 : "Trek raqamini son bilan yozing: 1, 2 yoki 4 va hokazo"
+admin_14 : "Raqam bo'yicha o'tish uchun navbatda kamida 2 ta trek bo'lishi kerak. Navbat: /queue"
+admin_15 : "Navbatda treklar yetarli emas. 1 dan {0} gacha son tanlang"
+admin_16 : "Trekka o'tib bo'lmadi.\n\nNavbatni tekshiring: /queue"
+admin_17 : "{0}.. Kuting"
+admin_18 : "Adminlar ro'yxati topilmadi\n\nYangilang: /admincache yoki /reload"
+admin_19 : "Ovozli chatni boshqarish huquqiga ega admin bo'lishingiz kerak.\nAgar admin bo'lsangiz, keshni yangilang: /admincache "
+admin_20 : "Adminlar keshi yangilandi."
+admin_21 : "Navbatda aralashtiradigan narsa yo'q"
+admin_22 : "Aralashtirib bo'lmadi.\n\nNavbat: /queue"
+admin_23 : "**Navbatni {0} aralashtirdi**\n\nNavbatni ko'ring: /queue"
+admin_24 : "**Ishlatilishi:**\n/loop [enable/disable] yoki [1-10 orasida son]\n\n**Misol:** /loop 5"
+admin_25 : "{0} takrorlashni yoqdi: **{1}** marta. Joriy musiqa **{1}** marta takrorlanadi"
+admin_26 : "Takrorlash uchun 1 dan 10 gacha son yozing"
+admin_27 : "Takrorlash o'chirildi"
+admin_28 : "**Ishlatilishi:**\n/seek yoki /seekback [soniya]"
+admin_29 : "Soniyani son bilan yozing, masalan 10, 20, 30"
+admin_30 : "Bu oqimni surib bo'lmaydi. Uni faqat o'tkazib yuborish yoki to'xtatish mumkin."
+admin_31 : "Bunchalik surib bo'lmaydi. Kichikroq qiymat tanlang: suriladigandan keyin 10 soniya qolishi kerak.\n\nIjro etildi: **{0}** daq / **{1}** daq"
+admin_32 : "Kuting... Surilmoqda."
+admin_33 : "{0} daqiqaga surildi"
+admin_34 : "Oqimni surib bo'lmadi."
+
+# Start
+start_1 : "Meni {0} ga qo'shganingiz uchun rahmat.\n{1} onlayn.\n\nYordam kerak bo'lsa, yordam guruhi va kanalimizga kiring."
+start_2 : "Salom, mening ismim {0}.\n\nMen Telegram ovozli chatlari uchun musiqa botiman. YouTube, Spotify, Resso, Apple Music, SoundCloud va boshqalar bilan ishlayman.\n\nMenni guruhlaringizga qo'shing."
+start_3 : "{0} ga xush kelibsiz\n\nIshlashim uchun **admin huquqi** kerak emas ( kerak bo'lgunicha ).\n\nYordamchi username:- @{1}\nYordamchi ID:- {2}"
+start_4 : "{0} egasi[{1}] chatingizga qo'shildi."
+start_5 : "{0} sudo foydalanuvchisi[{1}] chatingizga qo'shildi."
+start_6 : "❗️ **Superguruh kerak** ❗️\n\n**Guruhingizni** **superguruhga** aylantiring va meni qayta qo'shing.\n\n**Superguruh qanday qilinadi?**\n✅ Chat tarixini bir marta **ko'rinadigan** qiling."
+start_7 : "**Qora ro'yxatdagi chat**\n\nChatingiz bot tomonidan qora ro'yxatga olingan. Sudo foydalanuvchidan qaytarishni so'rang. [Sudo ro'yxati bu yerda]({0})"
+
+# Help
+help_1 : "Batafsil ma'lumot uchun quyidagi tugmalarni bosing. Buyruq ishlamasa, bot egasiga yoki yordam chatiga yozing.\n\nBarcha buyruqlar bilan ishlatiladi: /"
+help_2 : "Yordam uchun menga shaxsiy xabarda yozing."
+
+# Settings
+setting_1 : "⚙️ **Musiqa bot sozlamalari**\n\n🖇**Guruh:** {0}\n🔖**Guruh ID:** `{1}`\n\n💡**O'zgartirmoqchi bo'lgan funksiya tugmasini tanlang.**"
+setting_3 : "⁉️ Bu nima?\n\n1) Direct: topilganini darhol ijro etadi. Video uchun -v qo'shing.\n\n2) Inline: video yoki audio tanlash tugmalarini ko'rsatadi."
+setting_4 : "⁉️ Bu nima?\n\n👥 Hamma: guruhdagi istalgan kishi admin buyruqlarini (skip, pause, resume va h.k.) ishlata oladi.\n\n🙍 Faqat adminlar: admin buyruqlarini adminlar va ruxsat berilganlar ishlatadi."
+setting_5 : "Ruxsat berilgan foydalanuvchilar topilmadi\n\nIstalgan kishiga admin buyruqlarini /auth bilan ruxsat bering, /unauth bilan olib tashlang"
+setting_9 : "⁉️ Bu nima?\n\nYoqilganda bot o'z xabarlarini {0} dan keyin o'chiradi, chat toza turadi."
+setting_10 : "⁉️ Bu nima?\n\n1) Guruh: buyruq berilgan guruhda ijro etadi.\n\n2) Kanal: kerakli kanalda ijro etadi. Kanal ID sini /channelplay bilan kiriting"
+setting_11 : "⁉️ Bu nima?\n\n1) Hamma: guruhdagi istalgan kishi musiqa qo'ya oladi.\n\n2) Faqat adminlar: musiqani faqat adminlar qo'yadi."
+setting_12 : "❌ Kanal rejimi uchun kanal ID si kiritilmagan. /channelplay bilan kiriting."
+setting_13 : "Faol suhbat vaqtida ijro rejimini o'zgartirib bo'lmaydi. Avval ovozli chatni to'xtating: /stop."
+setting_14 : "⁉️ Bu nima?\n\nYoqilganda bot bajarilgan buyruqlarni (/play, /pause, /shuffle, /stop va h.k.) darhol o'chiradi.\n\nBuning uchun botga xabarlarni o'chirish huquqi kerak."
+setting_15 : "Kanalni aniqlab bo'lmadi. Bot kanalga qo'shilgani va admin qilinganini tekshiring.\n\nQayta urinib ko'ring: /channelplay.."
+setting_16 : "⁉️ Bu nima?\n\nYoqilganda bot 1-2 soatda bir marta chatda buyruqlar va funksiyalar haqida tasodifiy maslahat beradi."
+
+
+set_cb_1 : "Audio sifat paneli ochilmoqda..."
+set_cb_2 : "Video sifat paneli ochilmoqda..."
+set_cb_3 : "Ruxsat berilganlar paneli ochilmoqda..."
+set_cb_4 : "Ijro rejimi paneli ochilmoqda..."
+set_cb_5 : "Toza rejim paneli ochilmoqda..."
+set_cb_6 : "O'zgarishlar qo'llanmoqda."
+set_cb_7 : "Ruxsat berilganlar yuklanmoqda.. KUTING."
+set_cb_8 : "Orqaga qaytilmoqda.."
+
+# Misc
+ustats_1 : "Foydalanuvchi statistikasi topilmadi."
+ustats_2 : "Salom! Siz **{0}** ta trek, jami **{1}** marta ijro etdingiz.\n\nSizning top {2}:\n\n"
+
+gstats_1 : "Umumiy statistika yuklanmoqda, biroz vaqt olishi mumkin..."
+gstats_2 : "Statistika topilmadi."
+gstats_3 : "Botning global top 10 {0} yuklanmoqda, biroz vaqt olishi mumkin.."
+gstats_4 : "**Botga jami so'rovlar:** {0}\n\n{1} **{2}** ta trek, jami **{3}** marta ijro etdi.\n\n**Top {4} trek:**\n"
+gstats_5 : "**{1} ning top {0} chati:**\n\n"
+gstats_6 : "**{1} ning top {0} foydalanuvchisi:**\n\n"
+gstats_7 : "Bu guruhda **{0}** ta trek, jami **{1}** marta ijro etilgan.\n\nGuruhning top {2}:\n\n"
+gstats_8 : "Botning umumiy ma'lumoti va statistikasi yuklanmoqda.. Biroz vaqt olishi mumkin..."
+gstats_9 : "**BOTNING GLOBAL TOP 10 STATISTIKASI**\n\nBot serverlaridagi global statistikani ko'rish uchun tugmani tanlang."
+gstats_10 : "**{0} global statistikasi**\n\nBot serverlaridagi global statistikani ko'rish uchun tugmani tanlang."
+gstats_11 : "**{0} umumiy statistikasi**\nQuyidagi tugmalardan birini tanlang.\n\nTop treklar, chatlar va foydalanuvchilar uchun /gstats ni ishlating"
+
+
+# Play Callback
+playcb_1 : "Bu siz uchun emas! O'z qo'shig'ingizni qidiring."
+playcb_2 : "Keyingi natija yuklanmoqda"
+
+# Channel Play
+cplay_1 : "Bu chatdan[{0}] istalgan kanalga yoki chatning bog'langan kanaliga musiqa qo'yish mumkin.\n\n**Bog'langan kanal uchun:**\n`/{1} linked`\n\n**Boshqa kanal uchun:**\n`/{1} [Kanal ID]`"
+cplay_2 : "Bu chatda bog'langan kanal yo'q."
+cplay_3 : "Kanal belgilandi: {0}\n\n__Kanal ID__: {1}"
+cplay_4 : "Kanalni olib bo'lmadi.\n\nBot kanalga qo'shilgani va admin qilinganini tekshiring.\nKanalni o'zgartirish: /channelplay"
+cplay_5 : "Faqat kanallar qo'llab-quvvatlanadi."
+cplay_6 : "Kanalni[{0}] guruhga ulash uchun kanal **egasi** bo'lishingiz kerak.\n**Kanal egasi:** @{1}\n\nYoki guruhni shu kanalga bog'lab, `/channelplay linked` ni sinab ko'ring"
+
+# Play
+play_1 : "🔄 So'rov qayta ishlanmoqda... Kuting!"
+play_2 : "**🏷Kanal rejimi**\n\n🔄 So'rov qayta ishlanmoqda... Kuting!\n**Bog'langan kanal:** {0}"
+play_3 : "So'rovni qayta ishlab bo'lmadi!"
+play_no_results : "❌ So'rovingiz bo'yicha YouTube'da hech narsa topilmadi. Yozilishini tekshiring yoki boshqa so'z bilan qidiring."
+play_4 : "🖇 **Faqat adminlar uchun**\nBu guruhda musiqani faqat adminlar va ruxsat berilganlar qo'ya oladi.\n\nRejimni o'zgartirish: /playmode. Agar admin bo'lsangiz, keshni yangilang: /admincache"
+play_5 : "Audio faylni qayta ishlab bo'lmadi.\n\nAudio hajmi 100 MB dan kichik bo'lishi kerak"
+play_6 : "**Davomiylik chegarasidan oshdi**\n\n**Ruxsat etilgan: **{0} daqiqa\n**Kelgan:** {1} soat"
+play_7 : "Kechirasiz! Protsessor yuklamasi sababli bot video qo'ng'iroqlar sonini cheklaydi. Hozir ko'p chatlar video ishlatyapti. Audio tanlang yoki keyinroq urinib ko'ring"
+play_8 : "Video fayl kengaytmasi noto'g'ri!\n\n**Qo'llab-quvvatlanadigan formatlar:** {0}"
+play_9 : "Video fayl hajmi 1 GB dan kichik bo'lishi kerak"
+play_10 : "**YouTube pleylisti**\n\nButun YouTube pleylistini qaysi rejimda ijro etishni tanlang"
+play_11 : "📎Nomi: **{0}\n\n⏳Davomiyligi:** {1} daq"
+play_12 : "**Spotify rejimi**\n\nSo'ragan:- {0}"
+play_13 : "**Apple pleylistlari**\n\nSo'ragan:- {0}"
+play_14 : "**Havolani aniqlab bo'lmadi.**\nBot bu havola YouTube, Apple Music, Spotify, Resso yoki SoundCloud'ga tegishli ekaniga ishonch hosil qilolmadi.\n\nM3u8 yoki to'g'ridan-to'g'ri havolalar uchun /stream ishlating."
+play_15 : "**Jonli efir aniqlandi**\n\nTrek havolasi jonli efir deb aniqlandi. Efirni yoqaymi?"
+play_16 : "Trek ma'lumotini olib bo'lmadi. Boshqasini sinab ko'ring."
+play_17 : "Spotify'ning bu turdagi so'rovini ijro etib bo'lmaydi!\n\nFaqat Spotify treklari, albomlari, ijrochilari va pleylistlarini ijro eta olaman"
+play_18 : "**Faol ovozli chat topilmadi**\n\nMajburiy ijro uchun guruhda ovozli chat ketayotgan bo'lishi kerak. **Force Play** joriy trekni to'xtatib, topilganini darhol boshlaydi, navbatga tegmaydi."
+
+
+# Playlist
+playlist_1 : "**Ishlatilishi:** /play [musiqa nomi yoki YouTube havolasi yoki audioga javob]\n\nBot serveridagi pleylistni ijro etish uchun quyidagi tugmani bosing."
+playlist_2 : "Pleylistingiz yuklanmoqda. Kuting"
+playlist_3 : "Bot serverida pleylistingiz yo'q."
+playlist_4 : "Pleylistingiz:\n\n"
+playlist_5 :  "    Davomiyligi- {0} daq"
+playlist_6 : "Pleylistni o'chirish uchun menga shaxsiy xabarda yozing."
+playlist_7 : "Pleylistdagi treklar: {0}\n\nAniq trekni o'chirish uchun tugmani bosing.\n\nButun pleylistni o'chirish: «Butun pleylistni o'chirish» tugmasini bosing."
+playlist_8 : "Allaqachon bor\n\nBu trek pleylistingizda bor."
+playlist_9 : "Kechirasiz! Pleylistda faqat {0} ta musiqa bo'lishi mumkin."
+playlist_10 : "Pleylistga qo'shildi\n\n{0}\npleylistingizga qo'shildi."
+playlist_11 : "Trek muvaffaqiyatli o'chirildi."
+playlist_12 : "Trekni o'chirib bo'lmadi."
+playlist_13 : "Butun pleylistingiz serverdan o'chirildi. "
+playlist_14 : "**Butun pleylistni o'chirishga ishonchingiz komilmi?**\n\nPleylistingiz yo'qoladi, uni keyin tiklab bo'lmaydi."
+playlist_15 : "[Butun pleylistni ko'rish]({0})"
+playlist_16 : "Navbatdagi pleylist:"
+playlist_17 : "Navbatdagi o'rni-"
+playlist_18 : "[Navbatdagi butun pleylistni ko'rish]({0})\n\nOxirgi navbat o'rni : **{1}**"
+
+# Playmode
+playmode_1 : "Guruhingizda[{0}] so'rovlar qaysi rejimda bajarilishini tanlang."
+playmode_2 : "Sozlamalarni {0} o'zgartirdi va saqladi"
+
+# Stream
+str_1 : "M3u8 yoki Index havolalarini yozing."
+str_2 : "✅ Oqim tasdiqlandi\n\nKuting, havola qayta ishlanmoqda.."
+str_3 : "YouTube jonli efirini oqimga qo'yib bo'lmadi. Jonli format topilmadi"
+
+# TopPlay
+tracks_1 : "**{0} top 10 pleylisti qayta ishlanmoqda**\nBu bir necha daqiqa (taxminan 3-4 daq) olishi mumkin.. Kuting...\n\n**👤So'ragan:** {1}\n\nTop 10 treklarni ko'rish: /gstats"
+tracks_2 : "**Xato**\n\nBot serverlarida **{0} top 10 pleylisti** yo'q. Boshqa pleylistni sinab ko'ring"
+
+# Lyrics
+lyrics_1 : "**Ishlatilishi:**\n\n/lyrics [musiqa nomi]"
+lyrics_2 : "Qo'shiq matni qidirilmoqda"
+lyrics_3 : "❌ Qo'shiq matnini topib bo'lmadi😭.\n\n💡**Qidirilgan:** {0}"
+lyrics_4 : "Uzun xabarlar bilan chatni to'ldirmaslik uchun quyidagi tugmani bosib topilgan matnni oling."
+
+# Ping
+ping_1 : "Pong!!!!"
+ping_2 : "{0} yaxshi ishlayapti, ping `{1}` ms.\n\nBot ishlash vaqti {2}, serverda {3} joy band. Protsessor yuklamasi {4}, {5} xotira ishlatilgan. Py-Tgcalls ping: `{6}` ms."
+
+
+# Song
+song_1 : "YouTube'dan musiqa yoki video yuklab olish faqat shaxsiy chatda mumkin. Menga shaxsiy xabarda yozing."
+song_2 : "**Ishlatilishi:**\n\n/song [musiqa nomi] yoki [YouTube havolasi]"
+song_3 : "Jonli efir aniqlandi. YouTube jonli efirlarini yuklab bo'lmaydi. "
+song_4 : "**🔗Nomi:**- {0}\n\nYuklab olish formatini tanlang."
+song_5 : "YouTube havolasi yaroqsiz"
+song_6 : "Formatlar olinmoqda.. \n\nKuting.."
+song_7 : "Video uchun mavjud formatlarni olib bo'lmadi. Boshqa trekni sinab ko'ring."
+song_8 : "Yuklash boshlandi\n\nTezlik sekin bo'lishi mumkin. Kuting.."
+song_9 : "YouTube'dan qo'shiqni yuklab bo'lmadi\n\n**Sabab:** {0}"
+song_10 : "Serverdan Telegram'ga yuklab bo'lmadi."
+song_11 : "Yuborish boshlandi\n\nTezlik sekin bo'lishi mumkin. Kuting.."
+
+# Tools - Queue
+queue_1 : "Kuting..Navbat yuklanmoqda.."
+queue_2 : "Navbat bo'sh. Treklar yo'q"
+queue_3 : "<u>**Navbatdagi treklar:</u>**  [Qolgan treklarni ko'rish]({0})"
+queue_4 : "⏳ Navbatga qo'shildi, o'rni **#{0}\n\n💡Nomi:** {1}\n**⏱Davomiyligi:** {2}\n👤**Qo'shgan:** {3}"
+queue_5 : "Navbatda faqat bitta trek bor. Ro'yxatni ko'rish uchun yana qo'shing"
+
+# All Streaming Lines
+stream_1 : "📡 **Ijro boshlandi** 💡\n\n👤**So'ragan:** {0}\n🔦**Ma'lumot: **[Bu yerda]({1})"
+stream_2 : "📡 **Havola orqali ijro boshlandi ** 💡\n\n👤**So'ragan:** {0}"
+stream_3 : "📡 **Ijro boshlandi** 💡\n\n**🏷Nomi:** {0}\n⌛️**Davomiyligi**: {1}\n👤**So'ragan:** {2}"
+stream_4 : "📡 **Ijro boshlandi** 💡\n\n**🏷Nomi:** [{0}]({1})\n⌛️**Davomiyligi**: {2}\n👤**So'ragan:** {3}"
+
+# Inline Buttons
+
+#General Buttons
+CLOSE_BUTTON  : "🗑 Yopish"
+CLOSEMENU_BUTTON  : "🗑 Menyuni yopish"
+BACK_BUTTON : "⬅ Orqaga"
+UNBAN_BUTTON : "🗑 Yordamchini blokdan chiqarish"
+
+#Lyrics
+L_B_1 : "🚀 Qo'shiq matnini ochish"
+
+# Start
+S_B_1 : "🗒 Buyruqlar"
+S_B_2 : "🔧 Sozlamalar"
+S_B_3 : "📨 Yordam"
+S_B_4 : "📨 Kanal"
+S_B_5 : "✚ Guruhga qo'shish"
+S_B_6 : "💡 Repozitoriy"
+S_B_7 : "👤 Bot egasi"
+S_B_8 : "🔎 Qanday ishlatiladi? Buyruqlar menyusi."
+
+#Help
+H_B_1 : "Admin buyruqlari"
+H_B_2 : "Ijro buyruqlari"
+H_B_3 : "Bot buyruqlari"
+H_B_4 : "Qo'shimcha"
+H_B_5 : "Menyuni yopish"
+H_B_6 : "Sudo buyruqlari"
+
+#PlayMode
+PM_B_1 : "Darhol ijro"
+PM_B_2 : "Tugmalar bilan"
+PM_B_3 : "Kanal rejimi"
+
+#Play
+P_B_1 : "🎵 Audio"
+P_B_2 : "🎥 Video"
+P_B_3 : "🏮 Efirni yoqish"
+P_B_4 : "🎵 Pleylistni ijro etish"
+
+#Playlist
+PL_B_1 : "🚀 Pleylistni ijro etish"
+PL_B_2 : "✚ Pleylistlar"
+PL_B_3 : "✚ Panel"
+PL_B_4 : "📡 Rejim"
+PL_B_5 : "🔄 Butun pleylistni o'chirish"
+PL_B_6 : "↗️ Pleylistni o'chirish"
+PL_B_7 : "❗️ Ha, o'chirish"
+PL_B_8 : "🔢 Top 10 ni ijro etish"
+PL_B_9 : "🤖 Global top 10"
+PL_B_10 : "🏘 Guruh top 10"
+PL_B_11 : "👤 Mening top 10"
+
+#Settings
+ST_B_1 : "🔊 Audio sifati"
+ST_B_2 : "🎥 Video sifati"
+ST_B_3 : "🎩 Ruxsat berilganlar"
+ST_B_4 : "📱 Panel"
+ST_B_5 : "▶️ Ijro rejimi"
+ST_B_6 : "🏳️‍🌈 Til"
+ST_B_7 : "🔄 Toza rejim"
+ST_B_8 : "{0} Past sifatli audio"
+ST_B_9 : "{0} O'rta sifatli audio"
+ST_B_10 : "{0} Yuqori sifatli audio"
+ST_B_11 : "{0} Past sifatli video"
+ST_B_12 : "{0} O'rta sifatli video"
+ST_B_13 : "{0} Yuqori sifatli video"
+ST_B_14 : "✅ Yoqilgan"
+ST_B_15 : "❌ O'chirilgan"
+ST_B_16 : "👤 Adminlar"
+ST_B_17 : "👥 Hamma"
+ST_B_18 : "📋 Ruxsat berilganlar ro'yxati"
+ST_B_19 : "🔎 Qidiruv rejimi"
+ST_B_20 : "✅ Darhol"
+ST_B_21 : "✅ Tugmalar bilan"
+ST_B_22 : "👨‍⚖️ Admin buyruqlari"
+ST_B_23 : "🏘 Guruh"
+ST_B_24 : "🏷 Kanal"
+ST_B_25 : "🫂 Kim qo'ya oladi"
+ST_B_26 : "🗑 Buyruqlarni tozalash"
+ST_B_27 : "🧑‍🚀 Maslahatlar"
+
+#Song
+SG_B_1 : "↗️ Shaxsiy chatni ochish"
+SG_B_2 : "🔊 Audio"
+SG_B_3 : "🎥 Video"
+
+#Stats
+SA_B_1 : "📢 Top 10 chat"
+SA_B_2 : "🔢 Top 10 trek"
+SA_B_3 : "🧛 Top 10 foydalanuvchi"
+SA_B_4 : "🏷 Bu yerdagi top 10"
+SA_B_5 : "💡 Umumiy statistika"
+SA_B_6 : "👤 Mening statistikam"
+SA_B_7 : "🔢 Global top 10"
+SA_B_8 : "🤖 Bot statistikasi"
+
+#Queue
+QU_B_1 : "📑 Navbat"
+QU_B_2 : "{1} daqiqadan {0} daqiqasi ijro etildi"
+
+#Suggestions
+sug_0 : "❓**Bilasizmi?**\n\n✅ "
+sug_1 : "Musiqani ikki **qidiruv rejimida** qo'yish mumkin: Direct va Inline.\n\nRejimni o'zgartirish: /playmode"
+sug_2 : "Musiqani ikki **ruxsat rejimida** qo'yish mumkin: hamma uchun yoki faqat adminlar uchun.\n\nRejimni o'zgartirish: /playmode"
+sug_3 : "Musiqani **kanallarda** ham qo'yish mumkin.\n\nchannel_id ni /channelplay bilan kiriting va /cplay bilan ijro eting "
+sug_4 : "Oddiy a'zolar ham **RUXSAT BERILGANLAR RO'YXATIGA** qo'shilsa, admin buyruqlarini ishlata oladi. \nQo'shish: /auth , olib tashlash: /unauth , ro'yxat: /authusers"
+sug_5 : "Botda **toza rejim** bor.\nU bot xabarlarini 5 daqiqadan keyin o'chiradi, chat toza qoladi.\n\nYoqish yoki o'chirish: /settings [__standart bo'yicha yoqilgan__]"
+sug_6 : "**Spotify** treklari va pleylistlarini ham qo'yish mumkin.\n\nBoshlang: /play [Spotify havolasi]"
+sug_7 : "**Apple Music** treklari va pleylistlarini ham qo'yish mumkin.\n\nBoshlang: /play [Apple havolasi]"
+sug_8 : "**Resso Music** treklari va pleylistlarini ham qo'yish mumkin.\n\nBoshlang: /play [Resso havolasi]"
+sug_9 : "**SoundCloud** treklari va pleylistlarini ham qo'yish mumkin.\n\nBoshlang: /play [SoundCloud havolasi]"
+sug_10 : "Ovozli chatda **video** ham qo'yish mumkin: /vplay [nomi] yoki /play -v [nomi]"
+sug_11 : "Ovozli chat **audio sifatini** past, o'rta yoki yuqori qilib tanlash mumkin.\n\nSozlash: /settings"
+sug_12 : "Ovozli chat **video sifatini** past, o'rta yoki yuqori qilib tanlash mumkin.\n\nSozlash: /settings"
+sug_13 : "O'zingizning **statistikangizni**, masalan top 10 treklarni ko'rishingiz mumkin.\n\nStatistika: /gstats "
+sug_14 : "**Guruh statistikasini**, masalan top 10 treklarni ko'rishingiz mumkin.\n\nStatistika: /gstats "
+sug_15 : "Botning **global statistikasini** ko'rishingiz mumkin: top 10 foydalanuvchi, chat, trek va boshqalar.\n\nStatistika: /gstats "
+sug_16 : "Ovozli chatdagi musiqa ovozini o'chirish mumkin.\n\nBuyruq: /mute"
+sug_17 : "Ovozli chatdagi musiqa ovozini o'chirib-yoqish mumkin.\n\nBuyruqlar: /mute va /unmute"
+sug_18 : "Qo'shiq matnlarini qidirish mumkin.\n\nBuyruq: /lyrics [musiqa nomi]"
+sug_19 : "YouTube'dan musiqa yoki video yuklab olish mumkin.\n\nBuyruq: /song [musiqa nomi]"
+sug_20 : "Bot buyruqlarining to'liq ro'yxati.\n\nBuyruq: /help"
+sug_21 : "Botda serverdagi pleylist bor.\n\nMusiqalarni pleylistga qo'shib, hammasini /play bilan birga ijro eting"
+sug_22 : "Navbatdagi musiqalarni aralashtirish mumkin.\n\nBuyruq: /shuffle"
+sug_23 : "Musiqa navbatini ko'rish mumkin.\n\nBuyruq: /queue"
+sug_24 : "Bot egasi va sudo foydalanuvchilarini ko'rish mumkin.\n\nBuyruq: /sudolist"
+sug_25 : "Botda **buyruqlarni o'chirish rejimi** bor. U bajarilgan buyruqlarni avtomatik o'chiradi.\n\nYoqish yoki o'chirish: /settings [__standart bo'yicha yoqilgan__]"
+sug_26 : "Bot tilini qulay tilga o'zgartirish mumkin.\n\nBuyruq: /language"
+sug_27 : "Botda **Force Play** bor.\n\n**Force Play** joriy trekni to'xtatib, topilganini darhol boshlaydi, navbatga tegmaydi.\n\nBuyruq: /playforce"

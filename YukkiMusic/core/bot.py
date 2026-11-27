@@ -18,6 +18,10 @@ from pyrogram.types import BotCommand
 import config
 
 from ..logging import LOGGER
+from .fancy import install as _fancy_install
+
+# Barcha matn va tugmalar chiroyli shriftga o'giriladi
+_fancy_install()
 
 
 class YukkiBot(Client):
