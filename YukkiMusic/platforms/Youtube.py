@@ -519,7 +519,9 @@ class YouTubeAPI:
                     downloaded_file = stdout.decode().split("\n")[0]
                     direct = None
                 else:
-                    return
+                    raise Exception(
+                        (stderr.decode(errors="ignore").strip().splitlines() or ["yt-dlp: natija yo'q"])[-1][:200]
+                    )
         else:
             direct = True
             downloaded_file = await loop.run_in_executor(
