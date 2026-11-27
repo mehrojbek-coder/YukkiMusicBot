@@ -87,7 +87,7 @@ help_1 : "Click on the buttons below for more information. If you're facing any 
 help_2 : "Contact me in PM for help."
 
 # Settings
-setting_1 : "⚙️ **Music Bot Settings**\n\n🖇**Group:** {0}\n🔖**Group ID:** `{1}`\n\n💡**Choose the function buttons from below which you want to edit or change.**"
+setting_1 : "⚙️ **Music Bot Settings**\n\n🖇**Group: {0}**\n🔖**Group ID:** `{1}`\n\n💡**Choose the function buttons from below which you want to edit or change.**"
 setting_3 : "⁉️ What is This?\n\n1) Direct: Plays search queries directly. Use -v to play videos in direct mode.\n\n2) Inline: Returns Inline Markup Buttons for choosing between video & audio."
 setting_4 : "⁉️ What is This?\n\n👥 Everyone: Anyone can use admin commands(skip, pause, resume etc) present in this group.\n\n🙍 Admin Only: Only admins and authorized users can use admin commands."
 setting_5 : "No Authorized Users Found\n\nYou can allow any non-admin to use my admin commands by /auth and delete by using /unauth"

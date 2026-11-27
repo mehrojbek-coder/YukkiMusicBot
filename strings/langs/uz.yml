@@ -85,7 +85,7 @@ help_1 : "Batafsil ma'lumot uchun quyidagi tugmalarni bosing. Buyruq ishlamasa, 
 help_2 : "Yordam uchun menga shaxsiy xabarda yozing."
 
 # Settings
-setting_1 : "⚙️ **Musiqa bot sozlamalari**\n\n🖇**Guruh:** {0}\n🔖**Guruh ID:** `{1}`\n\n💡**O'zgartirmoqchi bo'lgan funksiya tugmasini tanlang.**"
+setting_1 : "⚙️ **Musiqa bot sozlamalari**\n\n🖇**Guruh: {0}**\n🔖**Guruh ID:** `{1}`\n\n💡**O'zgartirmoqchi bo'lgan funksiya tugmasini tanlang.**"
 setting_3 : "⁉️ Bu nima?\n\n1) Direct: topilganini darhol ijro etadi. Video uchun -v qo'shing.\n\n2) Inline: video yoki audio tanlash tugmalarini ko'rsatadi."
 setting_4 : "⁉️ Bu nima?\n\n👥 Hamma: guruhdagi istalgan kishi admin buyruqlarini (skip, pause, resume va h.k.) ishlata oladi.\n\n🙍 Faqat adminlar: admin buyruqlarini adminlar va ruxsat berilganlar ishlatadi."
 setting_5 : "Ruxsat berilgan foydalanuvchilar topilmadi\n\nIstalgan kishiga admin buyruqlarini /auth bilan ruxsat bering, /unauth bilan olib tashlang"

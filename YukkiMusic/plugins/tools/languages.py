@@ -13,6 +13,7 @@ from pyrogram.types import InlineKeyboardButton, Message
 
 from config import BANNED_USERS
 from strings import get_command, get_string, languages_present
+from YukkiMusic.utils.langtool import gt
 from YukkiMusic import app
 from YukkiMusic.utils.database import get_lang, set_lang
 from YukkiMusic.utils.decorators import (ActualAdminCB, language,
@@ -70,7 +71,7 @@ LANGUAGE_COMMAND = get_command("LANGUAGE_COMMAND")
 async def langs_command(client, message: Message, _):
     keyboard = lanuages_keyboard(_)
     await message.reply_text(
-        _["setting_1"].format(message.chat.title, message.chat.id),
+        _["setting_1"].format(gt(message.chat.title), message.chat.id),
         reply_markup=keyboard,
     )
 
@@ -128,7 +129,7 @@ async def language_markup(client, CallbackQuery, _):
         )
     try:
         return await CallbackQuery.edit_message_text(
-            new_["setting_1"].format(chat.title, chat.id),
+            new_["setting_1"].format(gt(chat.title), chat.id),
             reply_markup=keyboard,
         )
     except Exception:

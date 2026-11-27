@@ -9,3 +9,8 @@ async def L(chat_id):
         return get_string(await get_lang(chat_id))
     except Exception:
         return get_string("ru")
+
+
+def gt(title):
+    """Guruh nomini markdown buzmaydigan qilib qaytaradi."""
+    return "".join(c for c in str(title or "") if c not in "*_`[]")

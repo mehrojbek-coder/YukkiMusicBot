@@ -15,6 +15,7 @@ from pyrogram.types import (CallbackQuery, InlineKeyboardButton,
 from config import (BANNED_USERS, CLEANMODE_DELETE_MINS,
                     MUSIC_BOT_NAME, OWNER_ID)
 from strings import get_command
+from YukkiMusic.utils.langtool import gt
 from YukkiMusic import app
 from YukkiMusic.utils.database import (add_nonadmin_chat,
                                        cleanmode_off, cleanmode_on,
@@ -55,7 +56,7 @@ SETTINGS_COMMAND = get_command("SETTINGS_COMMAND")
 async def settings_mar(client, message: Message, _):
     buttons = setting_markup(_)
     await message.reply_text(
-        _["setting_1"].format(message.chat.title, message.chat.id),
+        _["setting_1"].format(gt(message.chat.title), message.chat.id),
         reply_markup=InlineKeyboardMarkup(buttons),
     )
 
@@ -72,7 +73,7 @@ async def settings_cb(client, CallbackQuery, _):
     buttons = setting_markup(_)
     return await CallbackQuery.edit_message_text(
         _["setting_1"].format(
-            CallbackQuery.message.chat.title,
+            gt(CallbackQuery.message.chat.title),
             CallbackQuery.message.chat.id,
         ),
         reply_markup=InlineKeyboardMarkup(buttons),
